@@ -1,0 +1,19 @@
+image: ruby:2.6.0
+
+cache:
+  key: ruby:2.6.0
+  paths:
+    - vendor/ruby
+
+stages:
+  - test
+
+test:rspec:
+  stage: test
+  script:
+    - gem update --system
+    - gem install bundler:2.1.4
+    - bundle config set path 'vendor/ruby'
+    - bundler update --bundler
+    - bundle install
+    - bundle exec rspec spec
