@@ -1,8 +1,9 @@
 module BBServices
   module Rails
 
-    #New
-    #
+    ##
+    # This class handles the building of a resource with the purpose of being
+    # used in a 'new' controller action
     class New < Service
 
       protected

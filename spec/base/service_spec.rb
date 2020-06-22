@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::Service, type: :model do
-  class self::TestBaseService < BBServices::Service
-    service_class Hash
-  end
-
   subject { BBServices::Service.new }
 
   describe ".run" do
@@ -39,6 +35,8 @@ RSpec.describe BBServices::Service, type: :model do
         subject.run
         expect(subject).to have_received(:run_service)
         expect(subject.succeeded?).to be false
+        expect(subject.has_errors?).to be true
+        expect(subject.errors.length).to be 1
       }
     end
   end
@@ -145,6 +143,10 @@ RSpec.describe BBServices::Service, type: :model do
   end
 
   describe "service_class" do
+    class self::TestBaseService < BBServices::Service
+      service_class Hash
+    end
+
     subject { self.class::TestBaseService.new }
     context "with the self.service_class called" do
 
@@ -154,12 +156,10 @@ RSpec.describe BBServices::Service, type: :model do
     end
 
     context "with the service_class= called" do
-      subject { self.class::TestBaseService.new }
+      subject { BBServices::Service.new }
 
       it {
-        subject = BBServices::Service.new
         subject.service_class = Hash
-
         expect(subject.service_class).not_to be nil
       }
     end

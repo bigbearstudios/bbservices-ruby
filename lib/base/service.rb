@@ -1,67 +1,54 @@
 module BBServices
+
+  ##
+  # This class handles the building of a basic / generic service
   class Service
-    # service_class
-    # Allows the setting of a service class which can be used through-out the service
+
     def self.service_class(klass)
       @service_class = klass
     end
 
-    # initialize
-    # initializes the service
     def initialize
 
-      # object
-      # The object which is managed by the service
       @object = nil
 
-      # successful
-      # Has the service been successful in terms of the run loop
       @successful = false
 
-      # errors
-      # The errors which have been thrown by the service (Or the underlying models)
       @errors = nil
 
-      # service_class
-      # The service class which will be created
       @service_class = nil
     end
 
-    # service_class
-    # Allows the setting of the internal service class which overrides the
-    # class set using the static typing
     def service_class=(klass)
       @service_class = klass
     end
 
-    # service_class
-    # Gets the service class which can either be the internal variable or the static
     def service_class
       @service_class ? @service_class : self.class.instance_variable_get(:@service_class)
     end
-
-    #
-    # Run methods
 
     def run(&block)
       begin
         initialize_service
         run_service
-      rescue
-        @successful = false
+      rescue StandardError => e
+        set_successful(false)
+        set_error(e)
       ensure
         call_block(&block)
       end
     end
 
     def run!(&block)
-      initialize_service
-      run_service!
-      call_block(&block)
+      begin
+        initialize_service
+        run_service!
+      rescue StandardError => e
+        set_successful(false)
+        set_error(e)
+        raise e
+      end
     end
-
-    #
-    # Param Accessors
 
     def params=(params)
       @params = params
@@ -115,6 +102,10 @@ module BBServices
       @object
     end
 
+    def errors
+      @errors
+    end
+
     def has_errors?
       @errors && @errors.length > 0
     end
@@ -131,6 +122,18 @@ module BBServices
 
     def run_service!
       @successful = true
+    end
+
+    def set_error(error)
+      if !@errors
+        @errors = []
+      end
+
+      @errors << error
+    end
+
+    def set_successful(successful = true)
+      @successful = successful
     end
 
     private

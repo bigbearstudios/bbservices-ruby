@@ -1,3 +1,6 @@
 require_relative "base/service"
 require_relative "rails/service"
 require_relative "rails/new"
+require_relative "rails/destroy"
+require_relative "rails/create"
+require_relative "rails/create_transactioned"
