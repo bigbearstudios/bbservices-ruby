@@ -7,6 +7,6 @@ Gem::Specification.new do |s|
   s.date = %q{2020-06-16}
   s.summary = %q{A simple service library for Ruby / Rails}
   s.files = ["lib/bbservices.rb"]
-  s.files += Dir["lib/base/*.rb"]
+  s.files += Dir["lib/**/*.rb"]
   s.require_paths = ["lib"]
 end
