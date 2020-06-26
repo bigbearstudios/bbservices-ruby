@@ -9,10 +9,11 @@ module BBServices
     end
 
     def initialize
-
       @object = nil
 
       @successful = false
+
+      @ran = false;
 
       @errors = nil
 
@@ -28,6 +29,7 @@ module BBServices
     end
 
     def run(&block)
+      set_ran
       begin
         initialize_service
         run_service
@@ -40,9 +42,11 @@ module BBServices
     end
 
     def run!(&block)
+      set_ran
       begin
         initialize_service
         run_service!
+        call_block(&block)
       rescue StandardError => e
         set_successful(false)
         set_error(e)
@@ -51,11 +55,15 @@ module BBServices
     end
 
     def params=(params)
-      @params = params
+      if params
+        @params = params
+      end
     end
 
     def associated_params=(params)
-      @associated_params = params
+      if params
+        @associated_params = params
+      end
     end
 
     def params
@@ -78,7 +86,15 @@ module BBServices
       end
     end
 
+    def ran?
+      @ran
+    end
+
     def succeeded?
+      (@successful && !has_errors? )
+    end
+
+    def successful?
       (@successful && !has_errors? )
     end
 
@@ -134,6 +150,10 @@ module BBServices
 
     def set_successful(successful = true)
       @successful = successful
+    end
+
+    def set_ran(ran = true)
+      @ran = ran
     end
 
     private

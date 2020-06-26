@@ -166,35 +166,92 @@ RSpec.describe BBServices::Service, type: :model do
   end
 
   describe ".succeeded?" do
-    it {
-      subject.run
-      expect(subject.succeeded?).to be true
-    }
+    context "with successful run" do
+      it {
+        subject.run
+        expect(subject.succeeded?).to be true
+      }
+    end
+
+    context "with an exception being thrown" do
+      before { allow(subject).to receive(:run_service).and_raise("Exception") }
+      it {
+        subject.run
+        expect(subject.succeeded?).to be false
+      }
+    end
   end
 
   describe ".failed?" do
-    it {
-      subject.run
-      expect(subject.failed?).to be false
-    }
+    context "with successful run" do
+      it {
+        subject.run
+        expect(subject.failed?).to be false
+      }
+    end
+
+    context "with an exception being thrown" do
+      before { allow(subject).to receive(:run_service).and_raise("Exception") }
+      it {
+        subject.run
+        expect(subject.failed?).to be true
+      }
+    end
   end
 
   describe ".success" do
-    it {
-      subject.run
-      subject.success {
-
+    context "with successful run" do
+      it {
+        subject.run
+        expect { |b| subject.success(&b) }.to yield_control
       }
-    }
+    end
+
+    context "with an exception being thrown" do
+      before { allow(subject).to receive(:run_service).and_raise("Exception") }
+      it {
+        subject.run
+        expect { |b| subject.success(&b) }.not_to yield_control
+      }
+    end
   end
 
   describe ".failure" do
-    before { allow(subject).to receive(:run_service).and_raise("Exception") }
+    context "with successful run" do
+      it {
+        subject.run
+        expect { |b| subject.failure(&b) }.not_to yield_control
+      }
+    end
+
+    context "with an exception being thrown" do
+      before { allow(subject).to receive(:run_service).and_raise("Exception") }
+      it {
+        subject.run
+        expect { |b| subject.failure(&b) }.to yield_control
+      }
+    end
+  end
+
+  describe ".ran?" do
+    context "when not ran" do
+      it {
+        expect(subject.ran?).to be false
+      }
+    end
+
+    context "when ran" do
+      it {
+        subject.run
+        expect(subject.ran?).to be true
+      }
+    end
+  end
+
+  describe ".object" do
     it {
       subject.run
-      subject.failure {
-
-      }
+      expect(subject.object).to be nil
     }
   end
 end

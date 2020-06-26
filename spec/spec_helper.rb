@@ -1,3 +1,11 @@
+require 'simplecov'
+
+##
+# SimpleCov
+SimpleCov.start do
+  add_filter 'spec'
+end
+
 require 'bbservices'
 
 ##

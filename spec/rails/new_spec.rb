@@ -1,24 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::Rails::New, type: :model do
-  class NewServiceTestModel
-    def save
-      true
-    end
-
-    def save!
-      true
-    end
-
-    def errors
-    end
-
-    def assign_attributes(attr)
-    end
-  end
-
   class NewServiceTestModelService < BBServices::Rails::New
-     service_class NewServiceTestModel
+     service_class ActiveRecordShim
   end
 
   subject { NewServiceTestModelService.new }
@@ -69,14 +53,14 @@ RSpec.describe BBServices::Rails::New, type: :model do
     context "after .run has been called" do
       before { subject.run }
       it {
-        expect(subject.resource).to be_instance_of(NewServiceTestModel)
+        expect(subject.resource).to be_instance_of(ActiveRecordShim)
       }
     end
 
     context "after .run! has been called" do
       before { subject.run! }
       it {
-        expect(subject.resource).to be_instance_of(NewServiceTestModel)
+        expect(subject.resource).to be_instance_of(ActiveRecordShim)
       }
     end
   end

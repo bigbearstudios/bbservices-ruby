@@ -1,6 +1,6 @@
 module BBServices
   module Rails
-    class Destroy < Service
+    class Edit < Service
 
     end
   end

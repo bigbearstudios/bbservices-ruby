@@ -5,4 +5,5 @@ ruby '2.6.0'
 
 group :development do
   gem 'rspec'
+  gem 'simplecov'
 end
