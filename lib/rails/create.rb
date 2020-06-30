@@ -1,18 +1,11 @@
 module BBServices
   module Rails
-
-    ##
-    # This class handles the creation of a resource with the purpose of being
-    # used in a 'create' controller action
     class Create < New
-
       protected
 
       ##
       # Allows functionality to be added before the save of the object
-      def before_save
-
-      end
+      def before_save() end
 
       ##
       # Saves the object. When overridden should save the @object to the database
@@ -25,9 +18,7 @@ module BBServices
         @successful = @object.save!
       end
 
-      def after_save(success)
-
-      end
+      def after_save(success) end
 
       ##
       # Runs the service. This involves calling internal_build, before_save,

@@ -1,9 +1,6 @@
 module BBServices
   module Rails
     class CreateTransactioned < Create
-
-      ##
-      #
       def run_service
         service_class.transaction {
           internal_save {
@@ -12,8 +9,6 @@ module BBServices
         }
       end
 
-      ##
-      #
       def run_service!
         service_class.transaction {
           internal_save {

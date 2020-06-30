@@ -1,37 +1,63 @@
 module BBServices
-
   ##
-  # This class handles the building of a basic / generic service
+  # The base class for all services. Handles the basic run loop and general accessors
   class Service
+    attr_reader :params, :object, :errors
+
+    def self.run(params = nil, &block)
+      self.new(params).tap do |service|
+        service.run(&block)
+      end
+    end
+
+    def self.run!(params = nil, &block)
+      self.new(params).tap do |service|
+        service.run!(&block)
+      end
+    end
 
     def self.service_class(klass)
       @service_class = klass
     end
 
-    def initialize
+    def self.get_service_class
+      @service_class
+    end
+
+    def initialize(params = nil)
+      ##
+      # The object which will be assigned to the service
       @object = nil
 
+      ##
+      # The state of success, was the service successful
       @successful = false
 
-      @ran = false;
+      ##
+      # The state of the run, has the service being ran
+      @ran = false
 
+      ##
+      # The errors which are returned by the service
       @errors = nil
 
+      ##
+      # The service class stored on the instance. This will override the
+      # service class set statically
       @service_class = nil
+
+      ##
+      # The params passed to the resource
+      @params = params
     end
 
-    def service_class=(klass)
-      @service_class = klass
-    end
-
-    def service_class
-      @service_class ? @service_class : self.class.instance_variable_get(:@service_class)
-    end
-
+    ##
+    # This runs the safe version of the service. E.g. Will rescue on exception
     def run(&block)
       set_ran
       begin
         initialize_service
+        internal_validation
         run_service
       rescue StandardError => e
         set_successful(false)
@@ -41,10 +67,13 @@ module BBServices
       end
     end
 
+    ##
+    # This runs the unsafe version of the service. E.g. Exceptions will be thrown
     def run!(&block)
       set_ran
       begin
         initialize_service
+        internal_validation
         run_service!
         call_block(&block)
       rescue StandardError => e
@@ -54,36 +83,32 @@ module BBServices
       end
     end
 
-    def params=(params)
-      if params
-        @params = params
-      end
+    def set_service_class(value)
+      @service_class = value
     end
 
-    def associated_params=(params)
-      if params
-        @associated_params = params
-      end
+    ##
+    # Sets the service_class instance variable
+    def service_class=(value)
+      set_service_class(value)
     end
 
-    def params
-      @params
+    ##
+    # Gets the service_class. This will go instance first, then static
+    def service_class
+      @service_class || self.class.get_service_class
     end
 
-    def associated_params
-      @associated_params
+    def set_params(value)
+      @params = value
+    end
+
+    def params=(value)
+      set_params(value)
     end
 
     def param_for(key)
-      if @params
-        @params[key]
-      end
-    end
-
-    def associated_param_for(key)
-      if @associated_params
-        @associated_params[key]
-      end
+      @params[key] if @params
     end
 
     def ran?
@@ -91,11 +116,11 @@ module BBServices
     end
 
     def succeeded?
-      (@successful && !has_errors? )
+      (@successful && !errors?)
     end
 
     def successful?
-      (@successful && !has_errors? )
+      (@successful && !errors?)
     end
 
     def failed?
@@ -103,49 +128,46 @@ module BBServices
     end
 
     def success(&block)
-      if succeeded?
-        yield
-      end
+      call_block(&block) if succeeded?
     end
 
     def failure(&block)
-      if failed?
-        yield
-      end
+      call_block(&block) if failed?
     end
 
-    def object
-      @object
+    def errors?
+      !!(@errors && @errors.length.positive?)
     end
 
-    def errors
-      @errors
-    end
-
-    def has_errors?
-      @errors && @errors.length > 0
+    def params?
+      !!@params
     end
 
     protected
 
-    def initialize_service
-
-    end
+    def initialize_service() end
 
     def run_service
-      @successful = true
+      set_successful
+      set_object(nil)
     end
 
     def run_service!
-      @successful = true
+      set_successful
+      set_object(nil)
+    end
+
+    def set_object(obj)
+      @object = obj
     end
 
     def set_error(error)
-      if !@errors
-        @errors = []
-      end
-
+      set_errors([]) unless @errors
       @errors << error
+    end
+
+    def set_errors(errors)
+      @errors = errors
     end
 
     def set_successful(successful = true)
@@ -158,10 +180,12 @@ module BBServices
 
     private
 
-    def call_block(&block)
-      if block_given?
-        yield(self)
-      end
+    def internal_validation
+      set_params({}) unless params?
+    end
+
+    def call_block
+      yield(self) if block_given?
     end
   end
 end

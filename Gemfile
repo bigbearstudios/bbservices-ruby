@@ -5,5 +5,6 @@ ruby '2.6.0'
 
 group :development do
   gem 'rspec'
+  gem 'rubocop', require: false
   gem 'simplecov'
 end

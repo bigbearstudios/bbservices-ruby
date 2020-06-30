@@ -1,30 +1,20 @@
 module BBServices
   module Rails
-
-    ##
-    # This class handles the building of a resource with the purpose of being
-    # used in a 'new' controller action
     class New < Service
 
       protected
-
-      def initialize_service
+      
+      def initialize_resource
         @object = service_class.new
       end
 
-      def before_build
+      def before_build() end
 
+      def assign_attributes
+        @object.assign_attributes(@params) if @params
       end
 
-      def build
-        if @params
-          @object.assign_attributes(@params)
-        end
-      end
-
-      def after_build
-
-      end
+      def after_build() end
 
       def run_service
         internal_build
@@ -37,7 +27,8 @@ module BBServices
 
       def internal_build
         before_build
-        build
+        initialize_resource
+        assign_attributes
         after_build
       end
     end

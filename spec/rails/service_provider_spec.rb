@@ -5,10 +5,10 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
     include BBServices::Rails::ServiceProvider
   end
 
-  context "instance methods" do
+  context 'instance methods' do
     subject { RailsServiceProviderController.new }
 
-    describe ".run_new_service" do
+    describe '.run_new_service' do
       it {
         service = subject.run_new_service(ActiveRecordShim)
 
@@ -17,7 +17,7 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
       }
     end
 
-    describe ".run_new_service!" do
+    describe '.run_new_service!' do
       it {
         service = subject.run_new_service!(ActiveRecordShim)
 
@@ -26,7 +26,7 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
       }
     end
 
-    describe ".run_create_service" do
+    describe '.run_create_service' do
       it {
         service = subject.run_create_service(ActiveRecordShim)
 
@@ -35,7 +35,7 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
       }
     end
 
-    describe ".run_create_service!" do
+    describe '.run_create_service!' do
       it {
         service = subject.run_create_service!(ActiveRecordShim)
 
@@ -44,83 +44,83 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
       }
     end
 
-    describe ".service" do
+    describe '.service' do
       it {
-        service = subject.service(BBServices::Service)
-        expect(service).to be_a(BBServices::Service)
+        service = subject.service(BBServices::Rails::Service)
+        expect(service).to be_a(BBServices::Rails::Service)
       }
 
       it {
-        service = subject.service(BBServices::Service, { param: true })
+        service = subject.service(BBServices::Rails::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       }
 
       it {
-        service = subject.service(BBServices::Service, {}, { param: true })
+        service = subject.service(BBServices::Rails::Service, {}, { param: true })
         expect(service.associated_params).to be_a(Hash)
         expect(service.associated_params.length).to be(1)
       }
     end
 
-    describe ".run_service" do
+    describe '.run_service' do
       it {
-        service = subject.run_service(BBServices::Service)
-        expect(service).to be_a(BBServices::Service)
+        service = subject.run_service(BBServices::Rails::Service)
+        expect(service).to be_a(BBServices::Rails::Service)
       }
 
       it {
-        service = subject.run_service(BBServices::Service, { param: true })
+        service = subject.run_service(BBServices::Rails::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       }
 
       it {
-        service = subject.run_service(BBServices::Service, {}, { param: true })
+        service = subject.run_service(BBServices::Rails::Service, {}, { param: true })
         expect(service.associated_params).to be_a(Hash)
         expect(service.associated_params.length).to be(1)
       }
 
       it {
-        subject.run_service(BBServices::Service, {}, { param: true }) do |service|
+        subject.run_service(BBServices::Rails::Service, {}, { param: true }) do |service|
           expect(service.successful?).to be(true)
         end
       }
     end
 
-    describe ".run_service!" do
+    describe '.run_service!' do
       it {
-        service = subject.run_service!(BBServices::Service)
-        expect(service).to be_a(BBServices::Service)
+        service = subject.run_service!(BBServices::Rails::Service)
+        expect(service).to be_a(BBServices::Rails::Service)
       }
 
       it {
-        service = subject.run_service!(BBServices::Service, { param: true })
+        service = subject.run_service!(BBServices::Rails::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       }
 
       it {
-        service = subject.run_service!(BBServices::Service, {}, { param: true })
+        service = subject.run_service!(BBServices::Rails::Service, {}, { param: true })
         expect(service.associated_params).to be_a(Hash)
         expect(service.associated_params.length).to be(1)
       }
 
       it {
-        subject.run_service!(BBServices::Service, {}, { param: true }) do |service|
+        subject.run_service!(BBServices::Rails::Service, {}, { param: true }) do |service|
           expect(service.successful?).to be(true)
         end
       }
     end
 
-    describe ".service_resource" do
-      context "without a ran service" do
+    describe '.service_resource' do
+      context 'without a ran service' do
         it {
           expect(subject.service_resource).to be nil
         }
       end
 
-      context "with a new ran service" do
+      context 'with a new ran service' do
         it {
           subject.run_new_service(ActiveRecordShim)
           expect(subject.service_resource).to be_instance_of(ActiveRecordShim)
@@ -129,21 +129,19 @@ RSpec.describe BBServices::Rails::ServiceProvider, type: :model do
     end
   end
 
-  context "class methods" do
-    describe "register_controller_helper" do
-      context "without a helper_method method" do
+  context 'class methods' do
+    describe 'register_controller_helper' do
+      context 'without a helper_method method' do
         it {
           RailsServiceProviderController.register_controller_helper(:method)
         }
       end
 
-      context "with a helper_method method" do
+      context 'with a helper_method method' do
         class RailsServiceProviderControllerComplete
           include BBServices::Rails::ServiceProvider
 
-          def self.helper_method(*methods)
-
-          end
+          def self.helper_method(*methods) end
         end
 
         it {

@@ -80,9 +80,7 @@ module BBServices
 
       module ClassMethods
         def register_controller_helper(*methods)
-          if respond_to?(:helper_method)
-            helper_method(methods)
-          end
+          helper_method(methods) if respond_to?(:helper_method)
         end
       end
     end

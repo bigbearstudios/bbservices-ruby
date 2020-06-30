@@ -6,23 +6,22 @@ module BBServices
 
         ##
         # Creates a brand new service of a given type
-        def service(service_type, service_params = {}, associated_params = {}, &block)
-          @service = service_type.new.tap do |service|
-            service.params = service_params
-            service.associated_params = associated_params
+        def service(service_type, service_params = {})
+          service_type.new.tap do |service|
+            service.set_params(service_params)
           end
         end
 
-        def run_service(service_type, service_params = {}, associated_params = {}, &block)
-          service(service_type, service_params, associated_params).tap do |service|
-            service.service_class = service_type
+        def run_service(service_type, service_params = {}, &block)
+          service(service_type, service_params).tap do |service|
+            service.set_service_class(service_type)
             service.run(&block)
           end
         end
 
-        def run_service!(service_type, service_params = {}, associated_params = {}, &block)
-          service(service_type, service_params, associated_params).tap do |service|
-            service.service_class = service_type
+        def run_service!(service_type, service_params = {}, &block)
+          service(service_type, service_params).tap do |service|
+            service.set_service_class(service_type)
             service.run!(&block)
           end
         end
@@ -30,7 +29,6 @@ module BBServices
     end
 
     module ClassMethods
-
     end
   end
 end
