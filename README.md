@@ -10,6 +10,15 @@ Add this line to your application's Gemfile:
 gem 'bbservices'
 ```
 
+## Quick Links
+
+- [Quick Start](#quick-start)
+- [Services Without Rails](#using-without-rails-activerecord)
+- [Services With Rails](#using-with-rails-activerecord)
+- [Safe vs Unsafe Execution](#safe-vs-unsafe-execution)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Usage
 
 ### Quick Start
@@ -94,15 +103,6 @@ service.errors
 ```
 
 #### Using with Rails / ActiveRecord
-
-### Extending Functionality
-
-
-
-
-### In Depth Guide
-
-
 
 ### Safe vs Unsafe Execution
 
