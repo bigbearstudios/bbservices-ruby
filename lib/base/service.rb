@@ -4,12 +4,16 @@ module BBServices
   class Service
     attr_reader :params, :object, :errors
 
+    ##
+    # Creates a new service class, then calls run
     def self.run(params = nil, &block)
       self.new(params).tap do |service|
         service.run(&block)
       end
     end
 
+    ##
+    # Creates a new service class, then calls run! 
     def self.run!(params = nil, &block)
       self.new(params).tap do |service|
         service.run!(&block)
