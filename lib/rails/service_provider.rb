@@ -73,7 +73,7 @@ module BBServices
           end
 
           def service_resource
-            @service ? @service.resource : nil
+            @service.resource if @service 
           end
         end
       end
