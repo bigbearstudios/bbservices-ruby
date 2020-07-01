@@ -117,6 +117,14 @@ To use `BBServices` with Rails there is four major classes involved and these ar
 
 and as you can see each of them revolves around the CRUD functionality which Rails offers.
 
+The basics of all of these classes are the same. They can all be ran via the service itself or via a service provider [See Below](##bbservicesrailsserviceprovider).
+
+Each of the classes has two optional parameters. The first being `params` and the second being `associated_params` and these can be used to pass in external params to the service.
+
+Its worth noting here that `params` is special in that these are the attributes which are passed automatically into the Model when `new`, `create`, `edit` or `destroy` services are ran.
+
+`associated_params` on the other hand are purely optional and can be used when creating associated Model or adding extra data to the Models creation such as a user_id. The use of `associated_params` will require you to override the functionality of the services.
+
 ##### BBServices::Rails::ServiceProvider
 
 There are multiple ways to call / use services but for the most part we would recommend using the `BBServices::Rails::ServiceProvider` which can be added as a concern to any controller like so
@@ -127,18 +135,103 @@ class UsersController < ActionController::Base
 end
 ```
 
-This will in turn give you access to the following methods which will allow you to run a service, be that a provided service or your own custom services. See [Extending Services](#extending-services) for more information.
+This will in turn give you access to the following methods which will allow you to run a service, be that a provided service or your own custom services.
 
   - `service` - Creates a service of a given type
   - `run_service` - Creates & Runs a service of given type
   - `run_service!` - Creates & Runs a service of given type
   - `service_resource` - Allows direct access to the services resourse. This is registered as a Rails helper method when inside a ActionController
 
+There is also a selection of 'ease of use' methods which give easier access to base services if no extension is required.
+
+  - `run_new_service`
+  - `run_new_service!`
+  - `run_create_service`
+  - `run_create_service!`
+
 ##### BBServices::Rails::New
 
-The `BBServices::Rails::New` service acts as a wrapper around any functionality which is normally handled when building a Rails Models, whether this be to return to the front-end via a `GET /new` route or if its going to be saved to the database via a `POST /` route.
+The `BBServices::Rails::New` service acts as a wrapper around the functionality which is normally handled when building a Rails Models, whether this be to return to the front-end via a `GET /new` route or if its going to be saved to the database via a `POST /` route.
 
-#### Extending Services
+The base `New` service will:
+
+  - Creates the Model
+  - Assign the params
+  - Capture any Errors
+
+and can be ran for any ActiveRecord Model via:
+
+```
+run_new_service(User ,{ first_name: "ron" }) do |service|
+  service.succcess { #handle success }
+  service.failure { #handle failure }
+end
+```     
+
+Or you can use your own service via:
+
+```
+run_service(MyNewService, { first_name: "ron" }) do |service|
+  service.succcess { #handle success }
+  service.failure { #handle failure }
+end
+```   
+
+The flow of `BBServices::Rails::New` is as follows:
+
+  - `initialize_service` : Can be overridden without consequence
+  - `before_build` : Can be overridden without consequence
+  - `initialize_resource` : runs Model.new as standard, must assign the resource object via `set_object`
+  - `assign_attributes` : Calls `assign_attributes` if `@params` are set
+  - `after_build` : Can be overridden without consequence
+
+##### BBServices::Rails::Create
+
+The `BBServices::Rails::Create` service acts as a wrapper around the functionality which is normally handled when creating a Rails Model.
+
+The base `Create` service will:
+
+  - Creates the Model
+  - Assign the params
+  - Saves the Model
+  - Capture any Errors
+
+  and can be ran for any ActiveRecord Model via:
+
+  ```
+  run_create_service(User ,{ first_name: "ron" }) do |service|
+    service.succcess { #handle success }
+    service.failure { #handle failure }
+  end
+  ```     
+
+  Or you can use your own service via:
+
+  ```
+  run_service(MyCreateService, { first_name: "ron" }) do |service|
+    service.succcess { #handle success }
+    service.failure { #handle failure }
+  end
+  ```
+
+This class subclasses the `BBServices::Rails::New` class and thus all of the methods above are still available / extendable but you also have the save methods. The complete flow is:  
+
+  - `initialize_service` : Can be overridden without consequence
+  - `before_build` : Can be overridden without consequence
+  - `initialize_resource` : runs Model.new as standard, must assign the resource object via `set_object`
+  - `assign_attributes` : Calls `assign_attributes` if `@params` are set
+  - `after_build` : Can be overridden without consequence
+  - `before_save` : Can be overridden without consequence
+  - `save / save!` : Saves the Model
+  - `after_save` : Can be overridden without consequence
+
+##### BBServices::Edit
+
+TODO
+
+##### BBServices::Destroy
+
+TODO
 
 ### Safe vs Unsafe Execution
 
@@ -158,6 +251,7 @@ To run rubocop: `bundle exec rubocop`
 
 ## Future Development
 
+- Add complete error handling on overriden methods. E.g. Handling @object on find / build overrides
 - Rspec Test Helpers
 - Mintest Test Helpers
 - Completion of Index, Delete Services
