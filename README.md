@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/pipeline.svg)](https://gitlab.com/big-bear-studios-open-source/bbservices/-/commits/master) [![coverage report](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/coverage.svg)](https://big-bear-studios-open-source.gitlab.io/bbservices)
+
 # BBServices
 
 BBServices is a lightweight service object which allows you to create re-usable, easily tested coded. It is designed to be used with Rails / ActiveRecord but can be used as a stand-alone service provider if required.
