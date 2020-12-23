@@ -11,7 +11,6 @@ rspec:
     - gem update --system
     - gem install bundler:2.1.4
     - bundle config set path 'vendor/ruby'
-    - bundler update --bundler
     - bundle install
     - bundle exec rspec spec
   artifacts:
