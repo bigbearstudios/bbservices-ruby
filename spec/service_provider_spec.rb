@@ -1,7 +1,7 @@
 require 'bbservices'
 require 'spec_helper'
 
-RSpec.describe ServiceProvider, type: :model do
+RSpec.describe ServiceProvider do
   class BaseServiceProviderController
     include ServiceProvider
   end

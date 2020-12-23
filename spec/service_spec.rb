@@ -1,7 +1,7 @@
 require 'bbservices'
 require 'spec_helper'
 
-RSpec.describe Service, type: :model do
+RSpec.describe Service do
   class TestService < Service 
 
   end
