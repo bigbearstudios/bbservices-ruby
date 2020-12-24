@@ -17,3 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed the layout of the tests (No Breaking changes)
+
+## [1.0.1] - 2020-12-24
+### Changed
+
+- Changed the layout of the /spec folder
+
+### Fixed 
+
+- Fixed the simple coverage report
