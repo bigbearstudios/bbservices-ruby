@@ -1,4 +1,3 @@
-require 'bbservices'
 require 'spec_helper'
 
 RSpec.describe Service do
