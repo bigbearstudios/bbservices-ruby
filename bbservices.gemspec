@@ -4,7 +4,6 @@ Gem::Specification.new do |spec|
   spec.authors = 'Stuart Farnaby, Big Bear Studios'
   spec.license = 'MIT'
   spec.homepage = 'https://gitlab.com/big-bear-studios-open-source/bbservices'
-  spec.date = '2020-06-16'
   spec.summary = 'A simple service library for Ruby. Please see BBActiveRecordServices for a Rails / AR service library'
 
   spec.files = ['lib/bbservices.rb']

@@ -4,14 +4,13 @@
 
 BBServices is a lightweight service object which allows you to create re-usable, easily tested coded. It is designed to be used with Rails / ActiveRecord but can be used as a stand-alone service provider if required.
 
-## Quick Links
+## Table of Contents
 
 - [BBServices](#bbservices)
-  - [Quick Links](#quick-links)
+  - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Quick Start](#quick-start)
-      - [Using without Rails / ActiveRecord](#using-without-rails--activerecord)
     - [Safe vs Unsafe Execution](#safe-vs-unsafe-execution)
   - [Contributing](#contributing)
   - [Future Development](#future-development)
@@ -28,8 +27,6 @@ gem 'bbservices'
 ## Usage
 
 ### Quick Start
-
-#### Using without Rails / ActiveRecord
 
 To use `BBServices` without Rails as a standalone service framework, simply create a new class, extend it with `BBServices::Service` and override the following functionality
 
