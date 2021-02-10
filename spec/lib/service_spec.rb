@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe Service do
-  class TestService < Service 
+RSpec.describe BBServices::Service do
+  class TestService < BBServices::Service 
 
   end
 
@@ -115,7 +115,7 @@ RSpec.describe Service do
   end
 
   describe 'service_class' do
-    class TestHashService < Service
+    class TestHashService < BBServices::Service
       service_class Hash
     end
     

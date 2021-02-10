@@ -1,2 +1,2 @@
-require_relative 'service'
-require_relative 'service_provider'
+require_relative 'bbservices/service'
+require_relative 'bbservices/service_provider'

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe ServiceProvider do
+RSpec.describe BBServices::ServiceProvider do
   class BaseServiceProviderController
-    include ServiceProvider
+    include BBServices::ServiceProvider
   end
 
   context 'instance methods' do
@@ -10,12 +10,12 @@ RSpec.describe ServiceProvider do
 
     describe '.service' do
       it 'should return an instance of the passed service' do
-        service = subject.service(Service)
-        expect(service).to be_a(Service)
+        service = subject.service(BBServices::Service)
+        expect(service).to be_a(BBServices::Service)
       end
 
       it 'should allow params to be passed' do
-        service = subject.service(Service, { param: true })
+        service = subject.service(BBServices::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       end
@@ -23,18 +23,18 @@ RSpec.describe ServiceProvider do
 
     describe '.run_service' do
       it 'should return an instance of the passed service' do
-        service = subject.run_service(Service)
-        expect(service).to be_a(Service)
+        service = subject.run_service(BBServices::Service)
+        expect(service).to be_a(BBServices::Service)
       end
 
       it 'should allow params to be passed' do
-        service = subject.run_service(Service, { param: true })
+        service = subject.run_service(BBServices::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       end
 
       it 'should be successful when ran as a base service' do
-        subject.run_service(Service) do |service|
+        subject.run_service(BBServices::Service) do |service|
           expect(service.successful?).to be(true)
           expect(service.failed?).to be false
         end
@@ -43,18 +43,18 @@ RSpec.describe ServiceProvider do
 
     describe '.run_service!' do
       it 'should return an instance of the passed service' do
-        service = subject.run_service!(Service)
-        expect(service).to be_a(Service)
+        service = subject.run_service!(BBServices::Service)
+        expect(service).to be_a(BBServices::Service)
       end
 
       it 'should allow params to be passed' do
-        service = subject.run_service!(Service, { param: true })
+        service = subject.run_service!(BBServices::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       end
 
       it 'should be successful when ran as a base service' do
-        subject.run_service!(Service, {}) do |service|
+        subject.run_service!(BBServices::Service, {}) do |service|
           expect(service.successful?).to be(true)
         end
       end
