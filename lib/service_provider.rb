@@ -14,6 +14,8 @@ module ServiceProvider
         end
       end
 
+      ##
+      # Creates and runs a brand new service using the safe method
       def run_service(service_type, service_params = {}, &block)
         service(service_type, service_params).tap do |service|
           service.set_service_class(service_type)
@@ -21,6 +23,8 @@ module ServiceProvider
         end
       end
 
+      ##
+      # Creates and runs a brand new service using the unsafe method
       def run_service!(service_type, service_params = {}, &block)
         service(service_type, service_params).tap do |service|
           service.set_service_class(service_type)

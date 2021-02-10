@@ -20,10 +20,14 @@ class Service
     end
   end
 
+  ##
+  # Sets the service class
   def self.service_class(klass)
     @service_class = klass
   end
 
+  ##
+  # Gets the service class
   def self.get_service_class
     @service_class
   end
@@ -57,6 +61,7 @@ class Service
 
   ##
   # This runs the safe version of the service. E.g. Will rescue on exception
+  # and set the error attribute
   def run(&block)
     set_ran
     begin
