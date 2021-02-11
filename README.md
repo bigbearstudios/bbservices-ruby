@@ -13,6 +13,9 @@ BBServices is a lightweight service object which allows you to create re-usable,
     - [Quick Start](#quick-start)
     - [Safe vs Unsafe Execution](#safe-vs-unsafe-execution)
   - [Contributing](#contributing)
+  - [Running Tests](#running-tests)
+  - [Running Rubocop](#running-rubocop)
+    - [Publishing](#publishing)
   - [Future Development](#future-development)
   - [License](#license)
 
@@ -121,15 +124,30 @@ BBServices uses a similar concept to Rails / ActiveRecord with its concept of sa
 - Write some code
 - Create a PR via `https://gitlab.com/big-bear-studios-open-source/bbservices/-/merge_requests`
 
-To run tests: `bundle exec rspec`
-To run rubocop: `bundle exec rubocop`
+## Running Tests
+
+``` bash
+bundle exec rspec
+```
+
+## Running Rubocop
+
+``` bash
+bundle exec rubocop
+```
+
+### Publishing
+
+``` bash
+gem build bbservices.gemspec
+gem publish bbservices-*.*.*.gem
+```
 
 ## Future Development
 
-- Add complete error handling on overriden methods. E.g. Handling @object on find / build overrides
+- Add complete error handling on overriden methods.
 - Rspec Test Helpers
 - Mintest Test Helpers
-- Completion of Index, Delete Services
 
 ## License
 
