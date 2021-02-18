@@ -7,7 +7,7 @@ module BBServices
 
     ##
     # Creates a new service class, then calls run
-    def self.run(params = nil, &block)
+    def self.run(params = {}, &block)
       self.new(params).tap do |service|
         service.run(&block)
       end
@@ -15,7 +15,7 @@ module BBServices
 
     ##
     # Creates a new service class, then calls run! 
-    def self.run!(params = nil, &block)
+    def self.run!(params = {}, &block)
       self.new(params).tap do |service|
         service.run!(&block)
       end
@@ -33,7 +33,7 @@ module BBServices
       @service_class
     end
 
-    def initialize(params = nil)
+    def initialize(params = {})
       ##
       # The object which will be assigned to the service
       @object = nil
@@ -67,7 +67,6 @@ module BBServices
       set_ran
       begin
         initialize_service
-        internal_validation
         run_service
       rescue StandardError => e
         set_successful(false)
@@ -83,7 +82,6 @@ module BBServices
       set_ran
       begin
         initialize_service
-        internal_validation
         run_service!
         call_block(&block)
       rescue StandardError => e
@@ -123,6 +121,10 @@ module BBServices
 
     def param(key)
       @params[key] if @params
+    end
+
+    def number_of_params
+      @params ? @params.length : 0
     end
 
     def ran?
@@ -193,10 +195,6 @@ module BBServices
     end
 
     private
-
-    def internal_validation
-      set_params({}) unless params?
-    end
 
     def call_block
       yield(self) if block_given?

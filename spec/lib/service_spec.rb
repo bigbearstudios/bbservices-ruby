@@ -5,6 +5,25 @@ RSpec.describe BBServices::Service do
 
   end
 
+  describe '.new' do 
+    it 'should allow no params to be passed' do 
+      service = described_class.new
+      expect(service).to be_a(described_class)
+    end
+
+    it 'should allow an hash of params to be passed' do 
+      service = described_class.new({ test: 'test' })
+      expect(service).to be_a(described_class)
+      expect(service.number_of_params).to be(1)
+    end   
+
+    it 'should allow a mapping of params to be passed' do 
+      service = described_class.new(test: 1, test_2: 2)
+      expect(service).to be_a(described_class)
+      expect(service.number_of_params).to be(2)
+    end
+  end
+
   subject { described_class.new }
 
   describe 'self.run' do
@@ -98,8 +117,8 @@ RSpec.describe BBServices::Service do
       expect(subject.params).to include(:test)
     end
 
-    it 'should have no default params' do
-      expect(subject.params).to be nil
+    it 'should have default params' do
+      expect(subject.params).not_to be nil
     end
   end
 
