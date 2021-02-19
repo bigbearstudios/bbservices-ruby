@@ -3,7 +3,7 @@ module BBServices
   ##
   # The base class for all services. Handles the basic run loop and general accessors
   class Service
-    attr_reader :params, :object, :errors
+    attr_reader :params, :object, :error
 
     ##
     # Creates a new service class, then calls run
@@ -47,8 +47,8 @@ module BBServices
       @ran = false
 
       ##
-      # The errors which are returned by the service
-      @errors = nil
+      # The error that has been throw by the service
+      @error = nil
 
       ##
       # The service class stored on the instance. This will override the
@@ -68,7 +68,7 @@ module BBServices
       begin
         initialize_service
         run_service
-      rescue StandardError => e
+      rescue => e
         set_successful(false)
         set_error(e)
       ensure
@@ -84,7 +84,7 @@ module BBServices
         initialize_service
         run_service!
         call_block(&block)
-      rescue StandardError => e
+      rescue => e
         set_successful(false)
         set_error(e)
         raise e
@@ -132,11 +132,11 @@ module BBServices
     end
 
     def succeeded?
-      (@successful && !errors?)
+      successful?
     end
 
     def successful?
-      (@successful && !errors?)
+      @successful
     end
 
     def failed?
@@ -151,8 +151,8 @@ module BBServices
       call_block(&block) if failed?
     end
 
-    def errors?
-      !!(@errors && @errors.length.positive?)
+    def error?
+      !!@error
     end
 
     def params?
@@ -178,12 +178,7 @@ module BBServices
     end
 
     def set_error(error)
-      set_errors([]) unless @errors
-      @errors << error
-    end
-
-    def set_errors(errors)
-      @errors = errors
+      @error = error
     end
 
     def set_successful(successful = true)

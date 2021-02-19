@@ -79,8 +79,7 @@ RSpec.describe BBServices::Service do
 
       expect(subject).to have_received(:run_service)
       expect(subject.succeeded?).to be false
-      expect(subject.errors?).to be true
-      expect(subject.errors.length).to be 1
+      expect(subject.error?).to be true
     end
   end
 
@@ -205,17 +204,17 @@ RSpec.describe BBServices::Service do
     end
   end
 
-  describe '.errors?' do
+  describe '.error?' do
     it 'should return false on a successful run' do
       subject.run
-      expect(subject.errors?).to be(false)
+      expect(subject.error?).to be(false)
     end
 
     it 'should return false on a unsuccessful run' do
       allow(subject).to receive(:run_service).and_raise('Exception')
       
       subject.run
-      expect(subject.errors?).to be(true)
+      expect(subject.error?).to be(true)
     end
   end
 

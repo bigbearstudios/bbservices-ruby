@@ -108,8 +108,8 @@ service.failure { #do things on failure }
 Check for errors, get the errors
 
 ``` ruby
-service.errors?
-service.errors
+service.error?
+service.error
 ```
 
 ### Safe vs Unsafe Execution
@@ -140,7 +140,7 @@ bundle exec rubocop
 
 ``` bash
 gem build bbservices.gemspec
-gem publish bbservices-*.*.*.gem
+gem push bbservices-*.*.*.gem
 ```
 
 ## Future Development
