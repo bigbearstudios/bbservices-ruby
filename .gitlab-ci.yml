@@ -16,6 +16,8 @@ rspec:
   artifacts:
     paths:
       - coverage/
+  except:
+      - tags
 
 pages:
   stage: deploy
@@ -29,3 +31,5 @@ pages:
     expire_in: 30 days
   only:
     - master
+  except:
+      - tags
