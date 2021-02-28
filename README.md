@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/pipeline.svg)](https://gitlab.com/big-bear-studios-open-source/bbservices/-/commits/master) [![coverage report](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/coverage.svg)](https://big-bear-studios-open-source.gitlab.io/bbservices)
 
-BBServices is a lightweight service object which allows you to create re-usable, easily tested coded. It is designed to be used with Rails / ActiveRecord but can be used as a stand-alone service provider if required.
+BBServices is a lightweight service object which allows you to create re-usable and  testable coded. 
 
 ## Table of Contents
 
@@ -11,6 +11,7 @@ BBServices is a lightweight service object which allows you to create re-usable,
   - [Installation](#installation)
   - [Usage](#usage)
     - [Quick Start](#quick-start)
+    - [Params](#params)
     - [Safe vs Unsafe Execution](#safe-vs-unsafe-execution)
   - [Contributing](#contributing)
   - [Running Tests](#running-tests)
@@ -21,17 +22,23 @@ BBServices is a lightweight service object which allows you to create re-usable,
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add it to your Gemfile:
 
-```ruby
+``` ruby
 gem 'bbservices'
+```
+
+Run the following command to install it:
+
+``` bash
+bundle install
 ```
 
 ## Usage
 
 ### Quick Start
 
-To use `BBServices` without Rails as a standalone service framework, simply create a new class, extend it with `BBServices::Service` and override the following functionality
+To use `BBServices`, simply create a new class, extend it with `BBServices::Service` and override the following functionality
 
 ``` ruby
 class MyService < BBServices::Service
@@ -46,14 +53,15 @@ class MyService < BBServices::Service
   # This method is called when calling 'run' or 'run_service' from a provider.
   # Please See 'safe vs unsafe' execution for more information
   def run_service
-
+    #Note that an error raise here will result in an unsuccessful run
   end
 
   ##
   # This method is called when calling 'run!' or 'run_service!' from a provider.
   # Please See 'safe vs unsafe' execution for more information
   def run_service!
-
+    #Note that an error raise here will result in an unsuccessful run, the error will also
+    #be raised up outside of the service
   end
 end
 ```
@@ -112,16 +120,37 @@ service.error?
 service.error
 ```
 
+### Params
+
+The only parameters that the run method takes is a hash of 'params'. These are passed directly to the service and will be accessble internally via the following methods:
+
+``` ruby
+#Called with:
+MyService.run(first_name: 'John', last_name: 'Griswald')
+
+
+class MyService < BBServices::Service
+  def run_service
+    param_for(:first_name) #John 
+    param(:first_name) #John
+
+    params #{ first_name => 'John', last_name => 'Griswald' }
+
+    number_of_params #2
+  end
+end
+```
+
 ### Safe vs Unsafe Execution
 
-BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that one will capture any exceptions and store them where as the other will throw an exception which then should be handled.
+BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that the first method will capture any exceptions and store them where as the other will throw an exception which then should be handled.
 
 ## Contributing
 
 - Clone the repository
 - Install bundler `gem install bundler`
 - Install gems `bundle`
-- Write some code
+- Write / push some code
 - Create a PR via `https://gitlab.com/big-bear-studios-open-source/bbservices/-/merge_requests`
 
 ## Running Tests
