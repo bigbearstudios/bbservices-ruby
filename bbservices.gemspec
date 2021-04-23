@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = 'bbservices'
-  spec.version = '2.2.0'
+  spec.version = '3.0.0'
   spec.authors = 'Stuart Farnaby, Big Bear Studios'
   spec.license = 'MIT'
   spec.homepage = 'https://gitlab.com/big-bear-studios-open-source/bbservices'
