@@ -36,3 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed the way errors are handled by a service. Only a single error is now avalible rather than a collection of errors
+
+## [3.0.0 ] - 2021-04-24
+### Changed
+
+- Added "# frozen_string_literal: true" to all files to ensure frozen_string_literal conformance 
+
+## [3.0.1 ] - 2021-04-24
+### Added (Development Only)
+
+- Added Guard gem
+- Added package.json to allow easier development 
