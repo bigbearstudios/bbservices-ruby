@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "bundle": "bundle install",
+    "test": "bundle exec rspec",
+    "test-watch": "bundle exec guard",
+    "rubocop": "bundle exec rubocop"
+  }
+}

@@ -3,24 +3,24 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::Service do
-  class TestService < BBServices::Service 
+  class TestService < BBServices::Service
 
   end
 
-  describe '.new' do 
-    it 'should allow no params to be passed' do 
+  describe '.new' do
+    it 'should allow no params to be passed' do
       service = described_class.new
       expect(service).to be_a(described_class)
     end
 
-    it 'should allow an hash of params to be passed' do 
+    it 'should allow an hash of params to be passed' do
       service = described_class.new({ test: 'test' })
       expect(service).to be_a(described_class)
       expect(service.number_of_params).to be(1)
-    end   
+    end
 
-    it 'should allow a mapping of params to be passed' do 
-      service = described_class.new(test: 1, test_2: 2)
+    it 'should allow a mapping of params to be passed' do
+      service = described_class.new(test: 1, test2: 2)
       expect(service).to be_a(described_class)
       expect(service.number_of_params).to be(2)
     end
@@ -34,7 +34,7 @@ RSpec.describe BBServices::Service do
         expect(described_class.run).to be_a(described_class)
       end
 
-      it 'should allow params to be passed' do 
+      it 'should allow params to be passed' do
         service = described_class.run({ test: 1 })
         expect(service.param_for(:test)).to eq(1)
       end
@@ -75,7 +75,7 @@ RSpec.describe BBServices::Service do
       expect(subject.failed?).to be false
     end
 
-    it 'should indicate it was unsuccessful' do 
+    it 'should indicate it was unsuccessful' do
       allow(subject).to receive(:run_service).and_raise('Exception')
       subject.run
 
@@ -88,7 +88,6 @@ RSpec.describe BBServices::Service do
   describe '.run!' do
     it 'should call the run_service method with an intercepted run_service' do
       allow(subject).to receive(:run_service!)
-      
       subject.run!
       expect(subject).to have_received(:run_service!)
     end
@@ -113,7 +112,6 @@ RSpec.describe BBServices::Service do
   describe '.params' do
     it 'should allow access to the params' do
       subject.params = { test: 'test' }
-      
       expect(subject.params).not_to be nil
       expect(subject.params).to include(:test)
     end
@@ -138,7 +136,7 @@ RSpec.describe BBServices::Service do
     class TestHashService < BBServices::Service
       service_class Hash
     end
-    
+
     it 'should allow the setting of a service class' do
       expect(TestHashService.new.service_class).to be(Hash)
     end
@@ -158,7 +156,7 @@ RSpec.describe BBServices::Service do
 
     it 'should return false on a unsuccessful run' do
       allow(subject).to receive(:run_service).and_raise('Exception')
-      
+
       subject.run
       expect(subject.succeeded?).to be(false)
     end
@@ -172,7 +170,7 @@ RSpec.describe BBServices::Service do
 
     it 'should return true on a unsuccessful run' do
       allow(subject).to receive(:run_service).and_raise('Exception')
-      
+
       subject.run
       expect(subject.failed?).to be(true)
     end
@@ -186,7 +184,7 @@ RSpec.describe BBServices::Service do
 
     it 'should not yield control on a unsuccessful run' do
       allow(subject).to receive(:run_service).and_raise('Exception')
-      
+
       subject.run
       expect { |b| subject.success(&b) }.not_to yield_control
     end
@@ -214,14 +212,14 @@ RSpec.describe BBServices::Service do
 
     it 'should return false on a unsuccessful run' do
       allow(subject).to receive(:run_service).and_raise('Exception')
-      
+
       subject.run
       expect(subject.error?).to be(true)
     end
   end
 
   describe '.params?' do
-    it 'should be false without params' do 
+    it 'should be false without params' do
       subject.params = nil
       expect(subject.params?).to be(false)
     end

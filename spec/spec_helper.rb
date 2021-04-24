@@ -8,7 +8,3 @@ SimpleCov.start do
 end
 
 require 'bbservices'
-
-RSpec.configure do |config|
-  
-end

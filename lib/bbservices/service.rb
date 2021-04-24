@@ -6,32 +6,31 @@ module BBServices
   class Service
     attr_reader :params, :object, :error
 
-    ##
-    # Creates a new service class, then calls run
-    def self.run(params = {}, &block)
-      self.new(params).tap do |service|
-        service.run(&block)
+    class << self
+      # Creates a new service class, then calls run
+      def run(params = {}, &block)
+        new(params).tap do |service|
+          service.run(&block)
+        end
       end
-    end
 
-    ##
-    # Creates a new service class, then calls run! 
-    def self.run!(params = {}, &block)
-      self.new(params).tap do |service|
-        service.run!(&block)
+      ##
+      # Creates a new service class, then calls run!
+      def run!(params = {}, &block)
+        new(params).tap do |service|
+          service.run!(&block)
+        end
       end
-    end
 
-    ##
-    # Sets the service class
-    def self.service_class(klass)
-      @service_class = klass
-    end
+      ##
+      # Sets the service class
+      def service_class(klass)
+        @service_class = klass
+      end
 
-    ##
-    # Gets the service class
-    def self.get_service_class
-      @service_class
+      def get_service_class
+        @service_class
+      end
     end
 
     def initialize(params = {})
@@ -92,20 +91,16 @@ module BBServices
       end
     end
 
-    def set_service_class(value)
-      @service_class = value
-    end
-
     ##
     # Sets the service_class instance variable
     def service_class=(value)
-      set_service_class(value)
+      @service_class = value
     end
 
     ##
     # Gets the service_class. This will go instance first, then static
     def service_class
-      @service_class || self.class.get_service_class
+      @service_class ||= self.class.get_service_class
     end
 
     def set_params(value)

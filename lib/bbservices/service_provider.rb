@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-module BBServices 
+module BBServices
   ##
-  # 
+  #
   module ServiceProvider
     def self.included(base)
-      base.extend ClassMethods
       base.class_eval do
-
         ##
         # Creates a brand new service of a given type
         def service(service_type, service_params = {})
@@ -20,7 +18,7 @@ module BBServices
         # Creates and runs a brand new service using the safe method
         def run_service(service_type, service_params = {}, &block)
           service(service_type, service_params).tap do |service|
-            service.set_service_class(service_type)
+            service.service_class = service_type
             service.run(&block)
           end
         end
@@ -29,15 +27,11 @@ module BBServices
         # Creates and runs a brand new service using the unsafe method
         def run_service!(service_type, service_params = {}, &block)
           service(service_type, service_params).tap do |service|
-            service.set_service_class(service_type)
+            service.service_class = service_type
             service.run!(&block)
           end
         end
       end
-    end
-
-    module ClassMethods
-      
     end
   end
 end
