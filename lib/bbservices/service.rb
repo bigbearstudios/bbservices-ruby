@@ -22,6 +22,9 @@ module BBServices
         end
       end
 
+      alias call run
+      alias call! run!
+
       ##
       # Sets the service class
       def service_class(klass)
@@ -90,6 +93,9 @@ module BBServices
         raise e
       end
     end
+
+    alias call run
+    alias call! run!
 
     ##
     # Sets the service_class instance variable

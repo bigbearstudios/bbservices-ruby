@@ -47,6 +47,25 @@ RSpec.describe BBServices::Service do
     end
   end
 
+  describe 'self.call' do
+    context 'With the Service base class' do
+      it 'should return an instance of the service' do
+        expect(described_class.call).to be_a(described_class)
+      end
+
+      it 'should allow params to be passed' do
+        service = described_class.call({ test: 1 })
+        expect(service.param_for(:test)).to eq(1)
+      end
+    end
+
+    context 'with an extended class' do
+      it 'should return an instance of the service' do
+        expect(TestService.call).to be_a(TestService)
+      end
+    end
+  end
+
   describe 'self.run!' do
     it 'should return an instance of the service with the base class' do
       expect(described_class.run!).to be_a(described_class)
@@ -54,6 +73,16 @@ RSpec.describe BBServices::Service do
 
     it 'should return an instance of the service with an extended class' do
       expect(TestService.run!).to be_a(TestService)
+    end
+  end
+
+  describe 'self.call!' do
+    it 'should return an instance of the service with the base class' do
+      expect(described_class.call!).to be_a(described_class)
+    end
+
+    it 'should return an instance of the service with an extended class' do
+      expect(TestService.call!).to be_a(TestService)
     end
   end
 
@@ -85,6 +114,14 @@ RSpec.describe BBServices::Service do
     end
   end
 
+  describe '.call' do
+    it 'should call the run_service method' do
+      allow(subject).to receive(:run_service)
+      subject.call
+      expect(subject).to have_received(:run_service)
+    end
+  end
+
   describe '.run!' do
     it 'should call the run_service method with an intercepted run_service' do
       allow(subject).to receive(:run_service!)
@@ -106,6 +143,14 @@ RSpec.describe BBServices::Service do
     it 'should raise the error with an unsuccessful run' do
       allow(subject).to receive(:run_service!).and_raise('Exception')
       expect { subject.run! }.to raise_error(RuntimeError)
+    end
+  end
+
+  describe '.call!' do
+    it 'should call the run_service method with an intercepted run_service' do
+      allow(subject).to receive(:run_service!)
+      subject.call!
+      expect(subject).to have_received(:run_service!)
     end
   end
 
