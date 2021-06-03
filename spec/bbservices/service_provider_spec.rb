@@ -12,12 +12,12 @@ RSpec.describe BBServices::ServiceProvider do
 
     describe '.service' do
       it 'should return an instance of the passed service' do
-        service = subject.service(BBServices::Service)
+        service = subject.create_service(BBServices::Service)
         expect(service).to be_a(BBServices::Service)
       end
 
       it 'should allow params to be passed' do
-        service = subject.service(BBServices::Service, { param: true })
+        service = subject.create_service(BBServices::Service, { param: true })
         expect(service.params).to be_a(Hash)
         expect(service.params.length).to be(1)
       end
@@ -59,6 +59,38 @@ RSpec.describe BBServices::ServiceProvider do
         subject.run_service!(BBServices::Service, {}) do |service|
           expect(service.successful?).to be(true)
         end
+      end
+    end
+
+    describe '.service' do 
+      context 'when a service is ran' do 
+        before do 
+          subject.run_service!(BBServices::Service)
+        end
+
+        it 'should assign the service to the provider' do 
+          expect(subject.service).to_not be_nil
+        end
+      end
+    end
+
+    describe '.chain_services' do 
+      it 'should pass the params through to the given block' do 
+        subject.chain_services(params: 111) do |params|
+          expect(params[:params]).to eq(111)
+        end
+      end
+  
+      it 'should return a ServiceChain' do 
+        expect(subject.chain_services {}).to be_a(BBServices::ServiceChain)
+      end
+    end
+
+    describe '.service_chain' do 
+      it 'should return the previously chained service' do 
+        subject.chain_services {}
+
+        expect(subject.service_chain {}).to be_a(BBServices::ServiceChain)
       end
     end
   end

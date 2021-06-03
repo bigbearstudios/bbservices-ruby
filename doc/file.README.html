@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.README.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'>
+<h1 id="label-BBServices">BBServices</h1>
+
+<p><a href="https://gitlab.com/big-bear-studios-open-source/bbservices/-/commits/master"><img src="https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/pipeline.svg"></a> <a href="https://big-bear-studios-open-source.gitlab.io/bbservices"><img src="https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/coverage.svg"></a></p>
+
+<p>BBServices is a lightweight service object which allows you to create re-usable and testable coded.</p>
+
+<h2 id="label-Table+of+Contents">Table of Contents</h2>
+<ul><li>
+<p><a href="#bbservices">BBServices</a></p>
+</li><li>
+<p><a href="#table-of-contents">Table of Contents</a></p>
+</li><li>
+<p><a href="#installation">Installation</a></p>
+</li><li>
+<p><a href="#usage">Usage</a></p>
+<ul><li>
+<p><a href="#quick-start">Quick Start</a></p>
+</li><li>
+<p><a href="#params">Params</a></p>
+</li><li>
+<p><a href="#complete-example">Complete Example</a></p>
+</li><li>
+<p><a href="#chaining-services">Chaining Services</a></p>
+</li><li>
+<p><a href="#safe-vs-unsafe-execution">Safe vs Unsafe Execution</a></p>
+</li></ul>
+</li><li>
+<p><a href="#contributing">Contributing</a></p>
+<ul><li>
+<p><a href="#running-tests">Running Tests</a></p>
+</li><li>
+<p><a href="#running-rubocop">Running Rubocop</a></p>
+</li><li>
+<p><a href="#publishing-required-ruby-gems-access">Publishing (Required Ruby Gems Access)</a></p>
+</li><li>
+<p><a href="#future-development">Future Development</a></p>
+</li></ul>
+</li><li>
+<p><a href="#license">License</a></p>
+</li></ul>
+
+<h2 id="label-Installation">Installation</h2>
+
+<p>Add it to your Gemfile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bbservices</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>Run the following command to install it:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-Quick+Start">Quick Start</h3>
+
+<p>To use <code>BBServices</code>, simply create a new class, extend it with <code>BBServices::Service</code> and override the following functionality</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>MyService</span> <span class='op'>&lt;</span> <span class='const'>BBServices</span><span class='op'>::</span><span class='const'>Service</span>
+
+  <span class='comment'># This method allows you to initialize the service, set any member variables
+</span>  <span class='comment'># and allocate any objects
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_initialize_service'>initialize_service</span>
+
+  <span class='kw'>end</span>
+
+  <span class='comment'>##
+</span>  <span class='comment'># This method is called when calling &#39;run&#39; or &#39;run_service&#39; from a provider.
+</span>  <span class='comment'># Please See &#39;safe vs unsafe&#39; execution for more information
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_run_service'>run_service</span>
+    <span class='comment'>#Note that an error raise here will result in an unsuccessful run, then error will be saved within the service and can be accessed via service.error
+</span>  <span class='kw'>end</span>
+
+  <span class='comment'>##
+</span>  <span class='comment'># This method is called when calling &#39;run!&#39; or &#39;run_service!&#39; from a provider.
+</span>  <span class='comment'># Please See &#39;safe vs unsafe&#39; execution for more information
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_run_service!'>run_service!</span>
+    <span class='comment'>#Note that an error raise here will result in an unsuccessful run, the error will also
+</span>    <span class='comment'>#be raised up outside of the service, but it will also be captured by the service and accessable via service.error
+</span>  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>One you have created your service and overriden the run_service OR run_service! methods you can then call the service via the class method of <code>run</code> / <code>run!</code> and pass in a block if you wish to access the service. Its worth noting here that the return of <code>run</code> and <code>run!</code> is the BBService itself.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>MyService</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span>
+
+<span class='kw'>end</span>
+</code></pre>
+
+<p>Internally this will run the service calling the <code>initialize_service</code> method, then <code>run_service</code> and will handle the internal state / errors which you can access via the following methods.</p>
+
+<p>Check if the service has been ran:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_run?'>run?</span>
+</code></pre>
+
+<p>Check the overall completion state of the service:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_successful?'>successful?</span>
+<span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_succeeded?'>succeeded?</span>
+<span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_failed?'>failed?</span>
+</code></pre>
+
+<p>Check the completion state via block:</p>
+
+<pre class="code ruby"><code class="ruby">
+#Similar syntax to the format blocks in Rails
+#Please note this will cause two if statements to be processed, E.g. one for success, one for failure
+service.success { #do things on success }
+service.failure { #do things on failure }
+
+#Cheaper programatically but uglier syntax
+service.on(
+  success: Proc.new { 
+    #On Success 
+  }, 
+  failure: Proc.new { 
+    #On Failure 
+  }
+)
+
+#Using the good old if statement, cheapest in terms of performance but not to everyones taste
+if service.success 
+  #On Success
+else 
+  #On Failure
+end
+</code></pre>
+
+<p>Check for errors, get the errors:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_error?'>error?</span>
+<span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_error'>error</span>
+</code></pre>
+
+<h3 id="label-Params">Params</h3>
+
+<p>The only parameters that the run method takes is a hash of &#39;params&#39;. These are passed directly to the service and will be accessble internally via the following methods:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'>#Called with:
+</span><span class='const'>MyService</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='label'>first_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>last_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Griswald</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+<span class='kw'>class</span> <span class='const'>MyService</span> <span class='op'>&lt;</span> <span class='const'>BBServices</span><span class='op'>::</span><span class='const'>Service</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_run_service'>run_service</span>
+    <span class='id identifier rubyid_param_for'>param_for</span><span class='lparen'>(</span><span class='symbol'>:first_name</span><span class='rparen'>)</span> <span class='comment'>#John 
+</span>    <span class='id identifier rubyid_param'>param</span><span class='lparen'>(</span><span class='symbol'>:first_name</span><span class='rparen'>)</span> <span class='comment'>#John
+</span>
+    <span class='id identifier rubyid_params'>params</span> <span class='comment'>#{ first_name =&gt; &#39;John&#39;, last_name =&gt; &#39;Griswald&#39; }
+</span>
+    <span class='id identifier rubyid_number_of_params'>number_of_params</span> <span class='comment'>#2
+</span>  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3 id="label-Complete+Example">Complete Example</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>csv</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='kw'>class</span> <span class='const'>CSVReader</span> <span class='op'>&lt;</span> <span class='const'>BBServices</span><span class='op'>::</span><span class='const'>Service</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize_service'>initialize_service</span>
+    <span class='ivar'>@file_path</span> <span class='op'>=</span> <span class='id identifier rubyid_param_for'>param_for</span><span class='lparen'>(</span><span class='symbol'>:file_path</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_run_service'>run_service</span> 
+    <span class='id identifier rubyid_csv'>csv</span> <span class='op'>=</span> <span class='const'>CSV</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='ivar'>@file_path</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_csv'>csv</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_row'>row</span><span class='op'>|</span>
+      <span class='comment'>#Do something with each row, any error here will be captured
+</span>    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+ 
+<span class='const'>CSVReader</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='label'>file_path:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>my_csv_file.csv</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span> 
+  <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_success'>success</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CSV was read!</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CSV Failed to read, this was the error </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_error'>error</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3 id="label-Chaining+Services">Chaining Services</h3>
+
+<p>With the entire point behind services being that they should perform a single action, you will no doubt run into the problem of &#39;How do I chain services?&#39;, BBServices has solved this with the <code>.chain</code> method when can be used via any service:</p>
+
+<pre class="code ruby"><code class="ruby">
+<span class='const'>BBServices</span><span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='label'>first_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>last_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Someone</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_service_chain'>service_chain</span><span class='op'>|</span> <span class='const'>CreatePerson</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_success'>success</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
+</code></pre>
+
+<h3 id="label-Safe+vs+Unsafe+Execution">Safe vs Unsafe Execution</h3>
+
+<p>BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that the first method will capture any exceptions and store them where as the other will throw an exception which then should be handled.</p>
+
+<h2 id="label-Contributing">Contributing</h2>
+<ul><li>
+<p>Clone the repository</p>
+</li><li>
+<p>Install bundler <code>gem install bundler</code></p>
+</li><li>
+<p>Install gems <code>bundle</code></p>
+</li><li>
+<p>Write / push some code</p>
+</li><li>
+<p>Create a PR via <code>https://gitlab.com/big-bear-studios-open-source/bbservices/-/merge_requests</code></p>
+</li></ul>
+
+<h3 id="label-Running+Tests">Running Tests</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rspec'>rspec</span>
+</code></pre>
+
+<h3 id="label-Running+Rubocop">Running Rubocop</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rubocop'>rubocop</span>
+</code></pre>
+
+<h3 id="label-Publishing+-28Required+Ruby+Gems+Access-29">Publishing (Required Ruby Gems Access)</h3>
+
+<pre class="code ruby"><code class="ruby">gem build bbservices.gemspec
+gem push bbservices-*.*.*.gem
+</code></pre>
+
+<h3 id="label-Future+Development">Future Development</h3>
+<ul><li>
+<p>Add ability to chain services</p>
+</li><li>
+<p>Add complete error handling on overriden methods.</p>
+</li><li>
+<p>Rspec Test Helpers</p>
+</li></ul>
+
+<h2 id="label-License">License</h2>
+
+<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Wed Jun  2 12:06:59 2021 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.6.0).
+</div>
+
+  </body>
+</html>
