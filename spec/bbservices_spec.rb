@@ -11,14 +11,14 @@ RSpec.describe BBServices do
     expect(BBServices::ServiceProvider)
   end
 
-  describe '.chain' do 
-    it 'should pass the params through to the given block' do 
+  describe '.chain' do
+    it 'should pass the params through to the given block' do
       BBServices.chain(params: 111) do |params|
         expect(params[:params]).to eq(111)
       end
     end
 
-    it 'should return a ServiceChain' do 
+    it 'should return a ServiceChain' do
       expect(BBServices.chain {}).to be_a(BBServices::ServiceChain)
     end
   end

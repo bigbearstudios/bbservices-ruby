@@ -156,6 +156,7 @@
       <pre class="lines">
 
 
+7
 8
 9
 10
@@ -208,16 +209,17 @@
 57
 58
 59
-60</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service_provider.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service_provider.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_included'>included</span><span class='lparen'>(</span><span class='id identifier rubyid_base'>base</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_base'>base</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
-
-    <span class='comment'># Creates a service with a given type and params, the service instance will not be ran. Sets the @service instance
-</span>    <span class='comment'># on the object which includes this provider.
+    <span class='comment'># Creates a service with a given type and params, the service instance will not be ran.
+</span>    <span class='comment'># Sets the @service instance on the object which includes this provider.
 </span>    <span class='comment'># @param [Class] service_type The class which should be instanciated
 </span>    <span class='comment'># @param [Hash] service_params The params which will be passed to the service
 </span>    <span class='comment'># @return [{BBServices::Service}] The service type instance
@@ -227,8 +229,8 @@
       <span class='kw'>end</span>
     <span class='kw'>end</span>
 
-    <span class='comment'># Creates a service with a given type and params, the service instance will be ran using the run method. Sets the @service instance
-</span>    <span class='comment'># on the object which includes this provider.
+    <span class='comment'># Creates a service with a given type and params, the service instance will be ran using the run method.
+</span>    <span class='comment'># Sets the @service instance on the object which includes this provider.
 </span>    <span class='comment'># @param [Class] service_type The class which should be instanciated
 </span>    <span class='comment'># @param [Hash] service_params The params which will be passed to the service
 </span>    <span class='comment'># @param [Block] block The block to call upon running of the service is complete
@@ -240,8 +242,8 @@
       <span class='kw'>end</span>
     <span class='kw'>end</span>
 
-    <span class='comment'># Creates a service with a given type and params, the service instance will be ran using the run! method. Sets the @service instance
-</span>    <span class='comment'># on the object which includes this provider.
+    <span class='comment'># Creates a service with a given type and params, the service instance will be ran using the run! method.
+</span>    <span class='comment'># Sets the @service instance on the object which includes this provider.
 </span>    <span class='comment'># @param [Class] service_type The class which should be instanciated
 </span>    <span class='comment'># @param [Hash] service_params The params which will be passed to the service
 </span>    <span class='comment'># @param [Block] block The block to call upon running of the service is complete
@@ -253,6 +255,10 @@
       <span class='kw'>end</span>
     <span class='kw'>end</span>
 
+    <span class='kw'>def</span> <span class='id identifier rubyid_chain_services'>chain_services</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+      <span class='ivar'>@service_chain</span> <span class='op'>=</span> <span class='const'>BBServices</span><span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
     <span class='comment'># Returns the {BBService::Service} instance currently stored within @service
 </span>    <span class='comment'># @return [{BBService::Service}] The current service
 </span>    <span class='kw'>def</span> <span class='id identifier rubyid_service'>service</span>
@@ -261,7 +267,7 @@
 
     <span class='comment'># Returns the {BBServices::ServiceChain} instance currently stored within @service_chain
 </span>    <span class='comment'># @return [{BBServices::ServiceChain}] The current service
-</span>    <span class='kw'>def</span> <span class='id identifier rubyid_service_chain'>service_chain</span> 
+</span>    <span class='kw'>def</span> <span class='id identifier rubyid_service_chain'>service_chain</span>
       <span class='ivar'>@service_chain</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -276,7 +282,7 @@
 </div>
 
     <div id="footer">
-  Generated on Wed Jun  2 12:06:59 2021 by
+  Generated on Fri Jun  4 21:21:30 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.6.0).
 </div>

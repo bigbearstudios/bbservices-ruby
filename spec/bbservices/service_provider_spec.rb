@@ -62,32 +62,32 @@ RSpec.describe BBServices::ServiceProvider do
       end
     end
 
-    describe '.service' do 
-      context 'when a service is ran' do 
-        before do 
+    describe '.service' do
+      context 'when a service is ran' do
+        before do
           subject.run_service!(BBServices::Service)
         end
 
-        it 'should assign the service to the provider' do 
+        it 'should assign the service to the provider' do
           expect(subject.service).to_not be_nil
         end
       end
     end
 
-    describe '.chain_services' do 
-      it 'should pass the params through to the given block' do 
+    describe '.chain_services' do
+      it 'should pass the params through to the given block' do
         subject.chain_services(params: 111) do |params|
           expect(params[:params]).to eq(111)
         end
       end
-  
-      it 'should return a ServiceChain' do 
+
+      it 'should return a ServiceChain' do
         expect(subject.chain_services {}).to be_a(BBServices::ServiceChain)
       end
     end
 
-    describe '.service_chain' do 
-      it 'should return the previously chained service' do 
+    describe '.service_chain' do
+      it 'should return the previously chained service' do
         subject.chain_services {}
 
         expect(subject.service_chain {}).to be_a(BBServices::ServiceChain)

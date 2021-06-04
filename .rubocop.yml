@@ -24,3 +24,9 @@ Lint/ConstantDefinitionInBlock:
   Enabled: false
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
+Lint/EmptyBlock:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/ClassAndModuleChildren: 
+  Enabled: false

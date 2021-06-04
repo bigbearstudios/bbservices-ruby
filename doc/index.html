@@ -247,11 +247,24 @@ end
 
 <pre class="code ruby"><code class="ruby">
 <span class='const'>BBServices</span><span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='label'>first_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>last_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Someone</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_service_chain'>service_chain</span><span class='op'>|</span> <span class='const'>CreatePerson</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
-  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='label'>company_name:</span> <span class='int'>666</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_service_chain'>service_chain</span><span class='comma'>,</span> <span class='id identifier rubyid_previous_service'>previous_service</span><span class='op'>|</span> <span class='const'>CreateCompany</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>creator_id:</span> <span class='id identifier rubyid_previous_service'>previous_service</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='period'>.</span><span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_service_chain'>service_chain</span><span class='op'>|</span> <span class='const'>NotifyPerson</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='period'>.</span><span class='id identifier rubyid_success'>success</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
   <span class='period'>.</span><span class='id identifier rubyid_failure'>failure</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span>
 </code></pre>
+
+<p>There are a given set of rules which are always followed when using the .chain method.</p>
+<ol><li>
+<p>A BBService object can be returned from .chain, this will be stored within the ServiceChain</p>
+</li><li>
+<p>The params value is the value from the current call to .chain</p>
+</li><li>
+<p>Success of the chain will be denoted by, All of the services being successful or All of the chained blocks returning a &#39;non-nil&#39; value</p>
+</li><li>
+<p>Any failures (E.g. Errors been thrown) will result in the chain stopping</p>
+</li><li>
+<p>Any failures using run! will result in the error being throw and require catching</p>
+</li></ol>
 
 <h3 id="label-Safe+vs+Unsafe+Execution">Safe vs Unsafe Execution</h3>
 
@@ -301,7 +314,7 @@ gem push bbservices-*.*.*.gem
 </div></div>
 
     <div id="footer">
-  Generated on Wed Jun  2 12:06:58 2021 by
+  Generated on Fri Jun  4 21:21:30 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.6.0).
 </div>

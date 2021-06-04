@@ -2,7 +2,6 @@
 
 # The BBServices namespace.
 module BBServices
-
   # Container for chained services.
   class ServiceChain
 
@@ -14,22 +13,16 @@ module BBServices
       @successful = true
     end
 
-    def chain(params = {}, &block)
-      self.tap do |service_chain|
+    def chain(params = {})
+      tap do |_service_chain|
         if @successful
           service = yield(params, self, previous_service)
-
-          if service.is_a?(BBServices::Service)
-            @services << service
-            @successful = service.successful?
-          else
-            @successful = !!(service)
-          end
+          process_service(service)
         end
       end
-    end 
+    end
 
-    def previous_service 
+    def previous_service
       return nil unless @services.length
 
       @services.last
@@ -54,26 +47,24 @@ module BBServices
     end
 
     # Calls the given block if the chain was successful
-    # @param [Block] block The block to be called upon success
-    def success(&block)
+    def success
       yield(self) if succeeded?
     end
 
     # Calls the given block if the chain failed
-    # @param [Block] block The block to be called upon failure
-    def failure(&block)
+    def failure
       yield(self) if failed?
     end
 
     # Calls success on success?, failure on !success?
     # @param [Proc] success The proc to be called upon a successful chain
-    # @param [Proc] failure 
+    # @param [Proc] failure
     # @return [Boolean] true/false if the chain has any params
-    def on(success: Proc.new {  }, failure: Proc.new {  })
+    def on(success: proc {}, failure: proc {})
       if successful?
-        success.call()
-      else 
-        failure.call()
+        success.call
+      else
+        failure.call
       end
     end
 
@@ -83,8 +74,19 @@ module BBServices
       previous_service ? previous_service.error? : false
     end
 
-    def error 
+    def error
       previous_service ? previous_service.error : nil
+    end
+
+    private
+
+    def process_service(service)
+      if service.is_a?(BBServices::Service)
+        @services << service
+        @successful = service.successful?
+      else
+        @successful = !!service
+      end
     end
   end
 end

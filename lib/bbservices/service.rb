@@ -4,13 +4,12 @@ require_relative 'service_chain'
 
 # The BBServices namespace.
 module BBServices
-
   # Error thrown when a Hash type isn't given
   class ServiceHashTypeError < StandardError
     def message
       'Params need to be a Hash'
     end
-  end  
+  end
 
   # The lightweight service object provided by BBServices.
   class Service
@@ -79,7 +78,6 @@ module BBServices
       begin
         initialize_service
         run_service
-
       rescue => e
         set_successful(false)
         set_error(e)
@@ -88,8 +86,8 @@ module BBServices
       end
     end
 
-    # Runs the service using 'unsafe' execution. The @run variable will be set to true, initialize_service and run_service
-    # will then be called.
+    # Runs the service using 'unsafe' execution. The @run variable will be set to true,
+    # initialize_service and run_service will then be called.
     # @param [Block] block The block which will be called upon the service finishing running
     # @return [BBServices.Service] returns the service instance
     def run!(&block)
@@ -133,9 +131,7 @@ module BBServices
     # Sets the params variable (@params) on the service.
     # @param [Hash] new_params The new params Hash.
     def set_params(new_params)
-      unless new_params.is_a?(Hash) 
-        raise BBServices::ServiceHashTypeError
-      end
+      raise BBServices::ServiceHashTypeError unless new_params.is_a?(Hash)
 
       @params = new_params
     end
@@ -200,26 +196,24 @@ module BBServices
     end
 
     # Calls the given block if the service was successful
-    # @param [Block] block The block to be called upon success
-    def success(&block)
+    def success
       yield(self) if succeeded?
     end
 
     # Calls the given block if the service failed
-    # @param [Block] block The block to be called upon failure
-    def failure(&block)
+    def failure
       yield(self) if failed?
     end
 
     # Calls success on success?, failure on !success?
     # @param [Proc] success The proc to be called upon a successful service
-    # @param [Proc] failure 
+    # @param [Proc] failure
     # @return [Boolean] true/false if the service has any params
-    def on(success: Proc.new {  }, failure: Proc.new {  })
+    def on(success: proc {}, failure: proc {})
       if successful?
-        success.call()
-      else 
-        failure.call()
+        success.call
+      else
+        failure.call
       end
     end
 

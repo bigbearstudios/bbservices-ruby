@@ -419,7 +419,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#failure-instance_method" title="#failure (instance method)">- (Object) <strong>failure</strong>(&amp;block) </a>
+      <a href="#failure-instance_method" title="#failure (instance method)">- (Object) <strong>failure</strong> {|_self| ... }</a>
     
 
     
@@ -493,7 +493,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#on-instance_method" title="#on (instance method)">- (Boolean) <strong>on</strong>(success: Proc.new {  }, failure: Proc.new {  }) </a>
+      <a href="#on-instance_method" title="#on (instance method)">- (Boolean) <strong>on</strong>(success: proc {}, failure: proc {}) </a>
     
 
     
@@ -592,6 +592,8 @@
       <a href="#ran%3F-instance_method" title="#ran? (instance method)">- (Boolean) <strong>ran?</strong> </a>
     
 
+    
+      (also: #run?)
     
   </span>
   
@@ -785,7 +787,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#success-instance_method" title="#success (instance method)">- (Object) <strong>success</strong>(&amp;block) </a>
+      <a href="#success-instance_method" title="#success (instance method)">- (Object) <strong>success</strong> {|_self| ... }</a>
     
 
     
@@ -884,6 +886,7 @@
       <pre class="lines">
 
 
+62
 63
 64
 65
@@ -891,11 +894,10 @@
 67
 68
 69
-70
-71</pre>
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@object</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -944,12 +946,12 @@
       <pre class="lines">
 
 
+16
 17
-18
-19</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_error'>error</span>
   <span class='ivar'>@error</span>
@@ -987,12 +989,12 @@
       <pre class="lines">
 
 
+16
 17
-18
-19</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_object'>object</span>
   <span class='ivar'>@object</span>
@@ -1030,12 +1032,12 @@
       <pre class="lines">
 
 
+16
 17
-18
-19</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_params'>params</span>
   <span class='ivar'>@params</span>
@@ -1132,14 +1134,14 @@
       <pre class="lines">
 
 
+41
 42
 43
 44
-45
-46</pre>
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span>
@@ -1231,14 +1233,14 @@
       <pre class="lines">
 
 
+44
 45
 46
 47
-48
-49</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run!'>run!</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span>
@@ -1294,12 +1296,12 @@
       <pre class="lines">
 
 
+55
 56
-57
-58</pre>
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_internal_service_class'>internal_service_class</span>
   <span class='ivar'>@service_class</span>
@@ -1391,14 +1393,14 @@
       <pre class="lines">
 
 
+24
 25
 26
 27
-28
-29</pre>
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span>
@@ -1492,14 +1494,14 @@
       <pre class="lines">
 
 
+34
 35
 36
 37
-38
-39</pre>
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run!'>run!</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_service'>service</span><span class='op'>|</span>
@@ -1575,12 +1577,12 @@
       <pre class="lines">
 
 
+49
 50
-51
-52</pre>
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_service_class'>service_class</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='rparen'>)</span>
   <span class='ivar'>@service_class</span> <span class='op'>=</span> <span class='id identifier rubyid_klass'>klass</span>
@@ -1640,12 +1642,12 @@
       <pre class="lines">
 
 
-206
-207
-208</pre>
+222
+223
+224</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 206</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_error?'>error?</span>
   <span class='op'>!</span><span class='op'>!</span><span class='ivar'>@error</span>
@@ -1699,12 +1701,12 @@
       <pre class="lines">
 
 
-188
-189
-190</pre>
+194
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 194</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_failed?'>failed?</span>
   <span class='op'>!</span><span class='id identifier rubyid_succeeded?'>succeeded?</span>
@@ -1717,7 +1719,7 @@
       <div class="method_details ">
   <h3 class="signature " id="failure-instance_method">
   
-    - (<tt>Object</tt>) <strong>failure</strong>(&amp;block) 
+    - (<tt>Object</tt>) <strong>failure</strong> {|_self| ... }
   
 
   
@@ -1732,27 +1734,40 @@
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
   
     <li>
       
-        <span class='name'>block</span>
+      
+        <span class='type'>(<tt>_self</tt>)</span>
       
       
-        <span class='type'>(<tt>Block</tt>)</span>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>_self</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="BBServices::Service (class)">BBServices::Service</a></span></tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>The block to be called upon failure</p>
+<p>the object that the method was called on</p>
 </div>
       
     </li>
   
 </ul>
-
 
 </div><table class="source_code">
   <tr>
@@ -1760,15 +1775,15 @@
       <pre class="lines">
 
 
-200
-201
-202</pre>
+204
+205
+206</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 200</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 204</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_failure'>failure</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_call_block'>call_block</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_failed?'>failed?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_failure'>failure</span>
+  <span class='kw'>yield</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_failed?'>failed?</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1819,12 +1834,12 @@
       <pre class="lines">
 
 
-164
-165
-166</pre>
+161
+162
+163</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 161</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_number_of_params'>number_of_params</span>
   <span class='ivar'>@params</span> <span class='op'>?</span> <span class='ivar'>@params</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>:</span> <span class='int'>0</span>
@@ -1837,7 +1852,7 @@
       <div class="method_details ">
   <h3 class="signature " id="on-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>on</strong>(success: Proc.new {  }, failure: Proc.new {  }) 
+    - (<tt>Boolean</tt>) <strong>on</strong>(success: proc {}, failure: proc {}) 
   
 
   
@@ -1909,22 +1924,22 @@
       <pre class="lines">
 
 
-220
-221
-222
-223
-224
-225
-226</pre>
+212
+213
+214
+215
+216
+217
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 220</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 212</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='label'>success:</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>failure:</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span>  <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='label'>success:</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>failure:</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_successful?'>successful?</span>
-    <span class='id identifier rubyid_success'>success</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='kw'>else</span> 
-    <span class='id identifier rubyid_failure'>failure</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_success'>success</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_failure'>failure</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1996,12 +2011,12 @@
       <pre class="lines">
 
 
-158
-159
-160</pre>
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 158</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_param'>param</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
   <span class='ivar'>@params</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='ivar'>@params</span>
@@ -2075,12 +2090,12 @@
       <pre class="lines">
 
 
-151
-152
-153</pre>
+148
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_param_for'>param_for</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_param'>param</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
@@ -2134,12 +2149,12 @@
       <pre class="lines">
 
 
-212
-213
-214</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 212</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_params?'>params?</span>
   <span class='op'>!</span><span class='op'>!</span><span class='lparen'>(</span><span class='ivar'>@params</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@params</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span>
@@ -2155,6 +2170,10 @@
     - (<tt>Boolean</tt>) <strong>ran?</strong> 
   
 
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='run?-instance_method'>run?</span></span>
+    </span>
   
 
   
@@ -2193,12 +2212,12 @@
       <pre class="lines">
 
 
-170
-171
-172</pre>
+167
+168
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 167</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ran?'>ran?</span>
   <span class='ivar'>@ran</span>
@@ -2276,6 +2295,7 @@
       <pre class="lines">
 
 
+76
 77
 78
 79
@@ -2286,11 +2306,10 @@
 84
 85
 86
-87
-88</pre>
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_ran'>set_ran</span>
@@ -2377,6 +2396,7 @@
       <pre class="lines">
 
 
+93
 94
 95
 96
@@ -2387,11 +2407,10 @@
 101
 102
 103
-104
-105</pre>
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run!'>run!</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_ran'>set_ran</span>
@@ -2454,12 +2473,12 @@
       <pre class="lines">
 
 
+127
 128
-129
-130</pre>
+129</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_service_class'>service_class</span>
   <span class='ivar'>@service_class</span> <span class='op'>||=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_internal_service_class'>internal_service_class</span>
@@ -2515,12 +2534,12 @@
       <pre class="lines">
 
 
+120
 121
-122
-123</pre>
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_service_class='>service_class=</span><span class='lparen'>(</span><span class='id identifier rubyid_new_service_class'>new_service_class</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_set_service_class'>set_service_class</span><span class='lparen'>(</span><span class='id identifier rubyid_new_service_class'>new_service_class</span><span class='rparen'>)</span>
@@ -2569,6 +2588,19 @@
   
 </ul>
 
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ServiceHashTypeError.html" title="BBServices::ServiceHashTypeError (class)">BBServices::ServiceHashTypeError</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -2576,21 +2608,17 @@
       <pre class="lines">
 
 
+133
 134
 135
 136
-137
-138
-139
-140</pre>
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_params'>set_params</span><span class='lparen'>(</span><span class='id identifier rubyid_new_params'>new_params</span><span class='rparen'>)</span>
-  <span class='kw'>unless</span> <span class='id identifier rubyid_new_params'>new_params</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span> 
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>BBServices</span><span class='op'>::</span><span class='const'>ServiceHashTypeError</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>BBServices</span><span class='op'>::</span><span class='const'>ServiceHashTypeError</span> <span class='kw'>unless</span> <span class='id identifier rubyid_new_params'>new_params</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
 
   <span class='ivar'>@params</span> <span class='op'>=</span> <span class='id identifier rubyid_new_params'>new_params</span>
 <span class='kw'>end</span></pre>
@@ -2645,12 +2673,12 @@
       <pre class="lines">
 
 
+114
 115
-116
-117</pre>
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_service_class'>set_service_class</span><span class='lparen'>(</span><span class='id identifier rubyid_new_service_class'>new_service_class</span><span class='rparen'>)</span>
   <span class='ivar'>@service_class</span> <span class='op'>=</span> <span class='id identifier rubyid_new_service_class'>new_service_class</span>
@@ -2704,12 +2732,12 @@
       <pre class="lines">
 
 
-176
-177
-178</pre>
+182
+183
+184</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_succeeded?'>succeeded?</span>
   <span class='id identifier rubyid_successful?'>successful?</span>
@@ -2722,7 +2750,7 @@
       <div class="method_details ">
   <h3 class="signature " id="success-instance_method">
   
-    - (<tt>Object</tt>) <strong>success</strong>(&amp;block) 
+    - (<tt>Object</tt>) <strong>success</strong> {|_self| ... }
   
 
   
@@ -2737,27 +2765,40 @@
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
   
     <li>
       
-        <span class='name'>block</span>
+      
+        <span class='type'>(<tt>_self</tt>)</span>
       
       
-        <span class='type'>(<tt>Block</tt>)</span>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>_self</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="BBServices::Service (class)">BBServices::Service</a></span></tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>The block to be called upon success</p>
+<p>the object that the method was called on</p>
 </div>
       
     </li>
   
 </ul>
-
 
 </div><table class="source_code">
   <tr>
@@ -2765,15 +2806,15 @@
       <pre class="lines">
 
 
-194
-195
-196</pre>
+199
+200
+201</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 199</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_success'>success</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_call_block'>call_block</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_succeeded?'>succeeded?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_success'>success</span>
+  <span class='kw'>yield</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_succeeded?'>succeeded?</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2824,12 +2865,12 @@
       <pre class="lines">
 
 
-182
-183
-184</pre>
+188
+189
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'lib/bbservices/service.rb', line 188</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_successful?'>successful?</span>
   <span class='ivar'>@successful</span>
@@ -2844,7 +2885,7 @@
 </div>
 
     <div id="footer">
-  Generated on Wed Jun  2 12:06:59 2021 by
+  Generated on Fri Jun  4 21:21:30 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.6.0).
 </div>
