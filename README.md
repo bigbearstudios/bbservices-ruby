@@ -2,12 +2,11 @@
 
 [![pipeline status](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/pipeline.svg)](https://gitlab.com/big-bear-studios-open-source/bbservices/-/commits/master) [![coverage report](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/coverage.svg)](https://big-bear-studios-open-source.gitlab.io/bbservices)
 
-BBServices is a lightweight service object which allows you to create re-usable and  testable coded.
-
 ## Table of Contents
 
 - [BBServices](#bbservices)
   - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Quick Start](#quick-start)
@@ -22,6 +21,16 @@ BBServices is a lightweight service object which allows you to create re-usable 
     - [Future Development](#future-development)
   - [License](#license)
 
+## Introduction
+
+BBServices is a lightweight service framework which allows you to create re-usable and testable code. Its purpose is to try and standardise the use of services across a project and provide a simple yet scalable iterface to allow developers to create, use and test service objects.
+
+There are three main parts of BBServices:
+
+- BBServices::Service, The extendable service class.
+- BBServices::ServiceProvider, A module to aid the calling of services from a `service provider`
+- BBServices::ServiceChain, The chain class which encapsulates the chaining of services.
+
 ## Installation
 
 Add it to your Gemfile:
@@ -30,17 +39,11 @@ Add it to your Gemfile:
 gem 'bbservices'
 ```
 
-Run the following command to install it:
-
-``` bash
-bundle install
-```
-
 ## Usage
 
 ### Quick Start
 
-To use `BBServices`, simply create a new class, extend it with `BBServices::Service` and override the following functionality
+To create a service, simply create a new class and extend it with `BBServices::Service` and override the following methods:
 
 ``` ruby
 class MyService < BBServices::Service
@@ -227,7 +230,6 @@ gem push bbservices-*.*.*.gem
 
 ### Future Development
 
-- Add ability to chain services
 - Add complete error handling on overriden methods.
 - Rspec Test Helpers
 
