@@ -31,6 +31,10 @@ There are three main parts of BBServices:
 - BBServices::ServiceProvider, A module to aid the calling of services from a `service provider`
 - BBServices::ServiceChain, The chain class which encapsulates the chaining of services.
 
+You then have some extensions such as: 
+
+- BBServices::Extensions::WithParams, allows a param hash to be accepted
+
 ## Installation
 
 Add it to your Gemfile:
@@ -48,25 +52,23 @@ To create a service, simply create a new class and extend it with `BBServices::S
 ``` ruby
 class MyService < BBServices::Service
 
-  # This method allows you to initialize the service, set any member variables
-  # and allocate any objects
-  def initialize_service
+  def initalize(param_1, param_2)
 
   end
 
   ##
   # This method is called when calling 'run' or 'run_service' from a provider.
   # Please See 'safe vs unsafe' execution for more information
-  def run_service
-    #Note that an error raise here will result in an unsuccessful run, then error will be saved within the service and can be accessed via service.error
+  def on_run
+    # Note that an error raise here will result in an unsuccessful run, then error will be saved within the service # and can be accessed via service.error
   end
 
   ##
   # This method is called when calling 'run!' or 'run_service!' from a provider.
   # Please See 'safe vs unsafe' execution for more information
-  def run_service!
-    #Note that an error raise here will result in an unsuccessful run, the error will also
-    #be raised up outside of the service, but it will also be captured by the service and accessable via service.error
+  def on_run!
+    # Note that an error raise here will result in an unsuccessful run, the error will also
+    # be raised up outside of the service, but it will also be captured by the service and accessable via service.
   end
 end
 ```
@@ -74,9 +76,9 @@ end
 One you have created your service and overriden the run_service OR run_service! methods you can then call the service via the class method of `run` / `run!` and pass in a block if you wish to access the service. Its worth noting here that the return of `run` and `run!` is the BBService itself.
 
 ``` ruby
-MyService.run do |service|
-
-end
+MyService.run
+or
+MyService.run!
 ```
 
 Internally this will run the service calling the `initialize_service` method, then `run_service` and will handle the internal state / errors which you can access via the following methods.
@@ -85,6 +87,8 @@ Check if the service has been ran:
 
 ``` ruby
 service.run?
+or
+service.ran?
 ```
 
 Check the overall completion state of the service:
@@ -99,26 +103,26 @@ Check the completion state via block:
 
 ``` ruby
 
-#Similar syntax to the format blocks in Rails
-#Please note this will cause two if statements to be processed, E.g. one for success, one for failure
-service.success { #do things on success }
-service.failure { #do things on failure }
+# Similar syntax to the format blocks in Rails
+# Please note this will cause two if statements to be processed, E.g. one for success, one for failure
+service.success { # Do things on success }
+service.failure { # Do things on failure }
 
-#Cheaper programatically but uglier syntax
+# Cheaper programatically but uglier syntax
 service.on(
   success: Proc.new { 
-    #On Success 
+    # On Success 
   }, 
   failure: Proc.new { 
-    #On Failure 
+    # On Failure 
   }
 )
 
-#Using the good old if statement, cheapest in terms of performance but not to everyones taste
+# Using the good old if statement, cheapest in terms of performance.
 if service.success 
-  #On Success
+  # On Success
 else 
-  #On Failure
+  # On Failure
 end
 
 ```
@@ -128,26 +132,6 @@ Check for errors, get the errors:
 ``` ruby
 service.error?
 service.error
-```
-
-### Params
-
-The only parameters that the run method takes is a hash of 'params'. These are passed directly to the service and will be accessble internally via the following methods:
-
-``` ruby
-#Called with:
-MyService.run(first_name: 'John', last_name: 'Griswald')
-
-class MyService < BBServices::Service
-  def run_service
-    param_for(:first_name) #John 
-    param(:first_name) #John
-
-    params #{ first_name => 'John', last_name => 'Griswald' }
-
-    number_of_params #2
-  end
-end
 ```
 
 ### Complete Example
@@ -200,6 +184,37 @@ There are a given set of rules which are always followed when using the .chain m
 ### Safe vs Unsafe Execution
 
 BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that the first method will capture any exceptions and store them where as the other will throw an exception which then should be handled.
+
+### Extensions 
+
+All extensions can be included into a service via `include`. See below for examples of the extensions:
+
+#### WithParams
+
+
+
+``` ruby
+#Called with:
+MyService.run(first_name: 'John', last_name: 'Griswald')
+
+class MyService < BBServices::Service
+  include BBServices::Extensions::WithParams
+
+  # This is how the constructor is 
+  # def initalize(params = {})
+  # @params = params
+  # end
+
+  def on_run
+    param_for(:first_name) #John 
+    param(:first_name) #John
+
+    params #{ first_name => 'John', last_name => 'Griswald' }
+
+    number_of_params #2
+  end
+end
+```
 
 ## Contributing
 

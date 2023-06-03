@@ -4,27 +4,44 @@
 module BBServices
   # Container for chained services.
   class ServiceChain
+    class ServiceChainReturnError < StandardError
+      def message
+        'A service must be returned from the chain call'
+      end
+    end
 
     attr_reader :services
 
     # Initializes the ServiceChain
+    # @services a list of the services in the chain
     def initialize
+      @successful = nil
       @services = []
-      @successful = true
+      @last_service_ran = nil
     end
 
-    def chain(params = {})
+    # Creates a new chain in the service
+    def chain(*args, &block)
       tap do |_service_chain|
-        if @successful
-          service = yield(params, self, previous_service)
-          process_service(service)
+        if continue_chain?
+          service = yield(*args, self, last_service)
+
+          # If a service is returned we store the service
+          # and take the successful? variable into our own
+          if BBServices.is_a_service?(service)
+            @successful = service.successful?
+            @services << service
+          else
+            @successful = true
+            # Otherwise we have had something else back from the service
+          end
         end
       end
     end
 
-    def previous_service
-      return nil unless @services.length
-
+    # Returns the last service which was ran. This will return the last
+    # service, if the previous chain returned a non-service instance
+    def last_service
       @services.last
     end
 
@@ -34,16 +51,16 @@ module BBServices
       successful?
     end
 
-    # Returns true/false on if the chain was successful.
-    # @return [Boolean] true/false on if the chain was successful.
+    # Returns true/false on if the service was successful.
+    # @return [Boolean] true/false on if the service was successful.
     def successful?
-      @successful
+      (@successful == nil ? false : @successful) 
     end
 
-    # Returns true/false on if the chain was unsuccessful. This will always be the inverse of successful?
-    # @return [Boolean] true/false on if the chain failed.
+    # Returns true/false on if the service was unsuccessful. This will always be the inverse of successful?
+    # @return [Boolean] true/false on if the service failed.
     def failed?
-      !succeeded?
+      (@successful == nil ? false : !@successful) 
     end
 
     # Calls the given block if the chain was successful
@@ -68,25 +85,33 @@ module BBServices
       end
     end
 
-    # Returns true / false if the chain threw an error
+    # Returns a true / false value if an error has been thrown, this
+    # will be passed to the last_service if one is avalible, otherwise
+    # false will be returned
     # @return [Boolean] true/false on if an error has occurred
     def error?
-      previous_service ? previous_service.error? : false
+      last_service ? last_service.error? : false
     end
 
+    # Returns the last error from the last_service, if no last_service
+    # is avalible then nil will be returned
     def error
-      previous_service ? previous_service.error : nil
+      last_service ? last_service.error : nil
+    end
+
+    # Returns all of the errors from the last_service, if no last_service
+    # is avalible then an empty array will be returned
+    def errors
+      last_service ? last_service.errors : []
     end
 
     private
 
-    def process_service(service)
-      if service.is_a?(BBServices::Service)
-        @services << service
-        @successful = service.successful?
-      else
-        @successful = !!service
-      end
+    # Should the chain continue?
+    # If we don't have a last service, return true
+    # If we have a last service check the successful? method
+    def continue_chain?
+      last_service == nil ? true : last_service.successful?
     end
   end
 end
