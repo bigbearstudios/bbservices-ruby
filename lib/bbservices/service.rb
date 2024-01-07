@@ -4,7 +4,9 @@ require_relative 'service_chain'
 
 # The BBServices namespace.
 module BBServices
-  # The lightweight service object provided by BBServices.
+
+  # The lightweight service object provided by BBServices. The basic functionality includes:
+  # - Ability to access user defined initalization. E.g. initalize(one = 1, two = 2)
   class Service
     attr_reader :error
 

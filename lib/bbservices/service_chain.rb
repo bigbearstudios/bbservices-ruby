@@ -4,12 +4,7 @@
 module BBServices
   # Container for chained services.
   class ServiceChain
-    class ServiceChainReturnError < StandardError
-      def message
-        'A service must be returned from the chain call'
-      end
-    end
-
+    
     attr_reader :services
 
     # Initializes the ServiceChain
@@ -91,12 +86,6 @@ module BBServices
     # @return [Boolean] true/false on if an error has occurred
     def error?
       last_service ? last_service.error? : false
-    end
-
-    # Returns the last error from the last_service, if no last_service
-    # is avalible then nil will be returned
-    def error
-      last_service ? last_service.error : nil
     end
 
     # Returns all of the errors from the last_service, if no last_service

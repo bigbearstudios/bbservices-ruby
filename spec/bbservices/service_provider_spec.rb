@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::ServiceProvider do
-  context 'with an extended service' do
+  context 'with an extended TestService' do
     let(:test_param_one) { 111 }
     let(:test_param_two) { { a: 111 } }
 

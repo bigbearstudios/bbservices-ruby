@@ -3,7 +3,22 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::Service do
-  context 'with an extended service' do
+
+  context 'with a base BBServices::Service' do
+    describe '#on_run' do
+      it 'should throw a NotImplementedError' do
+        expect { BBServices::Service.run }.to raise_error(NotImplementedError)
+      end
+    end
+
+    describe '#on_run!' do
+      it 'should throw a NotImplementedError' do
+        expect { BBServices::Service.run! }.to raise_error(NotImplementedError)
+      end
+    end
+  end
+
+  context 'with an extended TestService' do
     let(:test_param) { { a:1 } }
 
     context 'self.' do
@@ -276,6 +291,46 @@ RSpec.describe BBServices::Service do
             subject.on(success: success_proc, failure: failure_proc)
           end
         end
+      end
+    end
+  end
+
+  context 'with an extended NamedTestService' do
+    let(:test_param) { { a:1 } }
+
+    context 'self.' do
+      describe '#new' do
+        it { expect(NamedTestService.new).to be_a(described_class) }
+      end
+      
+      describe '#run' do
+        context 'with params named' do
+          subject { NamedTestService.run(param_one: test_param) }
+
+          it { expect(subject).to be_a(described_class) }
+          it { expect(subject).to be_a(NamedTestService) }
+          it { expect(subject.param_one).to eq(test_param) }
+          it { expect { |b| TestService.run(&b) }.to yield_control }
+        end
+
+        context 'without named params' do
+          subject { NamedTestService.run() }
+
+          it { expect(subject).to be_a(described_class) }
+          it { expect(subject).to be_a(NamedTestService) }
+          it { expect(subject.param_one).to eq(nil) }
+          it { expect(subject.param_two).to eq(nil) }
+          it { expect { |b| TestService.run(&b) }.to yield_control }
+        end
+      end
+
+      describe '#run!' do
+        subject { NamedTestService.run!(param_one: test_param) }
+
+        it { expect(subject).to be_a(described_class) }
+        it { expect(subject).to be_a(NamedTestService) }
+        it { expect(subject.param_one).to eq(test_param) }
+        it { expect { |b| NamedTestService.run!(&b) }.to yield_control }
       end
     end
   end
