@@ -2,9 +2,6 @@
   "scripts": {
     "bundle": "bundle install",
     "test": "bundle exec rspec",
-    "test-watch": "bundle exec guard",
-    "rubocop": "bundle exec rubocop",
-    "rubocop-autocorrect": "bundle exec rubocop --auto-correct-all",
     "yard": "yardoc 'lib/**/*.rb'",
     "build": "gem build bbservices.gemspec"
   }
