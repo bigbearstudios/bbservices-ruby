@@ -120,11 +120,11 @@ module BBServices
     # Returns true / false if the service threw an error.
     # @return [Boolean] true/false on if an error has occurred
     def error?
-      get_errors.count > 0
+      errors.count > 0
     end
 
     def errors
-      get_errors
+      @errors ||= []
     end
 
     protected
@@ -147,11 +147,6 @@ module BBServices
 
     private
 
-    def get_errors
-      return @errors if @errors 
-      @errors = []
-    end
-
     # Sets the internal @successful instance variable
     # @param [Boolean] successful True / False if the service has been successful
     def set_successful(successful = true)
@@ -161,7 +156,7 @@ module BBServices
     # Adds an error to the errors list
     # @param [Error] error The error to be assigned
     def register_error(error)
-      get_errors << error
+      errors << error
     end
   end
 end
