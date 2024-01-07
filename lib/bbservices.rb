@@ -4,6 +4,8 @@ require_relative 'bbservices/service'
 require_relative 'bbservices/service_chain'
 require_relative 'bbservices/service_provider'
 
+require_relative 'bbservices/extensions/with_params'
+
 # The BBServices namespace.
 module BBServices
   class << self
