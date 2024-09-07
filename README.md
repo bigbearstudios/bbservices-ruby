@@ -52,51 +52,56 @@ To create a service, simply create a new class and extend it with `BBServices::S
 ``` ruby
 class MyService < BBServices::Service
 
-  def initalize(param_1, param_2)
-
+  def initalize(my_number)
+    # Here you can setup any member variales you require and wish to put to
+    # use within the on_run / on_run! methods
+    @my_number = my_number
   end
 
+  #
+  # Please note that only one of the methods needs to be created in most cases.
+  # See 'safe vs unsafe' execution for more information
+
   ##
-  # This method is called when calling 'run' or 'run_service' from a provider.
-  # Please See 'safe vs unsafe' execution for more information
+  # This method is called when calling 'run / call' or 'run_service' from a provider.
   def on_run
-    # Note that an error raise here will result in an unsuccessful run, then error will be saved within the service # and can be accessed via service.error
+    @output = @my_number * 5
   end
 
   ##
-  # This method is called when calling 'run!' or 'run_service!' from a provider.
-  # Please See 'safe vs unsafe' execution for more information
+  # This method is called when calling 'run! / call!' or 'run_service!' from a provider.
   def on_run!
-    # Note that an error raise here will result in an unsuccessful run, the error will also
-    # be raised up outside of the service, but it will also be captured by the service and accessable via service.
+    @output = @my_number * 5
   end
 end
 ```
 
-One you have created your service and overriden the run_service OR run_service! methods you can then call the service via the class method of `run` / `run!` and pass in a block if you wish to access the service. Its worth noting here that the return of `run` and `run!` is the BBService itself.
+One you have created your service and overriden the on_run OR on_run! methods you can then call the service via the class methods of `run` / `run!`. Its worth noting here that the return of `run` and `run!` is the BBServices::Service itself or a block can be passed which will return the given service which by default will return the BBServices::Service instance.
 
 ``` ruby
-MyService.run
-or
-MyService.run!
+MyService.run(10) or MyService.run!(10)
+# Service instance will be return from both
+
+MyService.run(10) { |service| }
+
 ```
 
-Internally this will run the service calling the `initialize_service` method, then `run_service` and will handle the internal state / errors which you can access via the following methods.
+Internally this will run the service calling the `initialize` method as it would be on any ruby class, then `on_run` and will handle the internal state / errors which you can access via the following methods.
 
 Check if the service has been ran:
 
 ``` ruby
-service.run?
-or
-service.ran?
+service.run? or service.ran?
+# Will return true for a ran class, false for a class which is yet to be ran
 ```
 
 Check the overall completion state of the service:
 
 ``` ruby
-service.successful?
-service.succeeded?
+service.successful? or service.succeeded?
+# Will return true if the run was successful, false if not
 service.failed?
+# Will return false if a run was successful, true if not
 ```
 
 Check the completion state via block:
@@ -131,20 +136,28 @@ Check for errors, get the errors:
 
 ``` ruby
 service.error?
+# Will return true / false if there is any errors present
+
+service.errors
+# Will return an array of all the errors thrown
+
 service.error
+# Will return the first error
 ```
 
 ### Complete Example
+
+#### CSV Parsing Service
 
 ``` ruby
 require 'csv'
 
 class CSVReader < BBServices::Service
-  def initialize_service
-    @file_path = param_for(:file_path)
+  def initialize(file_path)
+    @file_path = file_path
   end
 
-  def run_service 
+  def on_run 
     csv = CSV.read(@file_path)
     csv.each do |row|
       #Do something with each row, any error here will be captured
@@ -161,29 +174,29 @@ end
 
 ### Chaining Services
 
-With the entire point behind services being that they should perform a single action, you will no doubt run into the problem of 'How do I chain services?', BBServices has solved this with the `.chain` method when can be used via any service:
+With the entire point behind services being that they should perform a single action, you will no doubt run into the problem of 'How do I run multiple services which depend on one another?', BBServices has solved this with the `.then` method when can be used via any service:
 
 ```ruby
 
-BBServices.chain(first_name: 'John', last_name: 'Someone') { |params, service_chain| CreatePerson.run(params) }
-  .chain(company_name: 666) { |params, service_chain, previous_service| CreateCompany.run(params.merge(creator_id: previous_service.id)) }
-  .chain() { |params, service_chain| NotifyPerson.run() }
-  .success {  }
-  .failure {  }
+# Note that your inital service needs to be ran, this is because without this BBServices would know if
+# you wish to use the ! method on run or not
+CreateUserService.run(params)
+  .then { |chain| EmailUserService.run!(chain.first.user) }
+  .then { |chain| PushNotifyUserService.run!(chain.first.user) }
 
 ```
-
+<!-- 
 There are a given set of rules which are always followed when using the .chain method.
 
-1. A BBService object can be returned from .chain, this will be stored within the ServiceChain
-2. The params value is the value from the current call to .chain
+1. A BBService object can be returned from .chain, this will be stored within the ServiceChain. Any other value will be treat as a success / fail based on truthiness.
+2. The params value is the value from the current call to .chain.
 3. Success of the chain will be denoted by, All of the services being successful or All of the chained blocks returning a 'non-nil' value
 4. Any failures (E.g. Errors been thrown) will result in the chain stopping
-5. Any failures using run! will result in the error being throw and require catching
+5. Any failures using run! will result in the error being throw and require catching -->
 
 ### Safe vs Unsafe Execution
 
-BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that the first method will capture any exceptions and store them where as the other will throw an exception which then should be handled.
+BBServices uses a similar concept to Rails / ActiveRecord with its concept of save vs save! where in that the first method will capture any exceptions and store them where as the other will throw an exception which then should be handled by the developer. This can be useful using testing when you want the first exception to bubble up to your tests and not be swolled by the BBServices::Service.
 
 ### Extensions 
 
@@ -191,9 +204,7 @@ All extensions can be included into a service via `include`. See below for examp
 
 #### WithParams
 
-
-
-``` ruby
+<!-- ``` ruby
 #Called with:
 MyService.run(first_name: 'John', last_name: 'Griswald')
 
@@ -214,7 +225,7 @@ class MyService < BBServices::Service
     number_of_params #2
   end
 end
-```
+``` -->
 
 ## Contributing
 
@@ -230,13 +241,7 @@ end
 bundle exec rspec
 ```
 
-### Running Rubocop
-
-``` bash
-bundle exec rubocop
-```
-
-### Publishing (Required Ruby Gems Access)
+### Publishing (Requires Ruby Gems Access)
 
 ``` bash
 gem build bbservices.gemspec

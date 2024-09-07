@@ -6,19 +6,30 @@ require_relative 'bbservices/service_provider'
 
 require_relative 'bbservices/extensions/with_params'
 
-# The BBServices namespace.
+# The BBServices namespace. Provides helper methods to aid with
+# service resolution
 module BBServices
-  class << self
-    def chain(*args, &block)
-      BBServices::ServiceChain.new.tap do |service_chain|
-        service_chain.chain(*args, &block)
-      end
-    end
 
+  class ServiceMustRunBeforeChainingError < StandardError
+    def message
+      'BBServices - Service must be ran before chaining via then can occur'
+    end
+  end
+
+  class ServiceExpectedError < StandardError
+    def message
+      'BBServices - A service must be returned from the given block'
+    end
+  end
+
+  class << self
+
+    # Returns true if a BBServices::Service is passed, false for all other types
     def is_a_service?(service)
       service.is_a?(BBServices::Service)
     end
 
+     # Returns false if a BBServices::Service is passed, true for all other types
     def is_not_a_service?(service)
       !BBServices.is_a_service?(service)
     end

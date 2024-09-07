@@ -27,28 +27,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed the simple coverage report
 
-## [2.0.0 ] - 2021-02-11
+## [2.0.0] - 2021-02-11
 ### Changed
 
 - Changed the module path from: Service -> BBServices::Service, ServiceProvider -> BBServices::ServiceProvider
 
-## [2.0.0 ] - 2021-02-11
+## [2.0.0] - 2021-02-11
 ### Changed
 
 - Changed the way errors are handled by a service. Only a single error is now avalible rather than a collection of errors
 
-## [3.0.0 ] - 2021-04-24
+## [3.0.0] - 2021-04-24
 ### Changed
 
 - Added "# frozen_string_literal: true" to all files to ensure frozen_string_literal conformance 
 
-## [3.0.1 ] - 2021-04-24
+## [3.0.1] - 2021-04-24
 ### Added (Development Only)
 
 - Added Guard gem
 - Added package.json to allow easier development 
 
-## [3.1.0 ] - 2021-06-04
+## [3.1.0] - 2021-06-04
 ### Added
 
 - Added yard documentation
@@ -59,3 +59,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - set_error has been made private
 - set_success has been made private
+
+## [4.0.0] - 2023-01-07
+
+### Changed
+
+-  Changed BBServices::Service - error is now replaced with an errors array
+-  Changed BBServices::Service - run_service & run_service has been replaced with on_run & on_run!
+-  Changed BBServices::ServiceChain - no longer requires a BBService to be returned
+
+### Added
+
+- Added param functionality via the BBServices::Extensions::WithParams module
+
+### Removed
+
+- BBServices::Service - params, object & error are no longer part of the base Service class
+- BBServices::Service - initialize_service is no longer needed and initalize can be used instead
+- rubocop, guard-rspec as dependencies

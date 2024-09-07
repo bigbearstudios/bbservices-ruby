@@ -8,4 +8,5 @@ SimpleCov.start do
 end
 
 require 'bbservices'
-require_relative 'spec_classes'
+require_relative 'support/spec_classes'
+require_relative 'support/shared_examples/bbservice'

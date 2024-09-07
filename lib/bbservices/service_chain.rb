@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# The BBServices namespace.
 module BBServices
+
   # Container for chained services.
   class ServiceChain
     
@@ -9,30 +9,26 @@ module BBServices
 
     # Initializes the ServiceChain
     # @services a list of the services in the chain
-    def initialize
+    def initialize(service = nil)
       @successful = nil
       @services = []
       @last_service_ran = nil
-    end
 
-    # Creates a new chain in the service
-    def chain(*args, &block)
-      tap do |_service_chain|
-        if continue_chain?
-          service = yield(*args, self, last_service)
-
-          # If a service is returned we store the service
-          # and take the successful? variable into our own
-          if BBServices.is_a_service?(service)
-            @successful = service.successful?
-            @services << service
-          else
-            @successful = true
-            # Otherwise we have had something else back from the service
-          end
-        end
+      if service != nil
+        @services << service
       end
     end
+
+    # Creates a new chain in the service with block, returns the chain instance for method chaining.
+    # The block should be used to call the next service and recieves the following params:
+    # - BBServices::ServiceChain (self)
+    def chain(&block)
+      self.tap do |c|
+        c.send(:_chain, block)
+      end
+    end
+
+    alias_method :then, :chain
 
     # Returns the last service which was ran. This will return the last
     # service, if the previous chain returned a non-service instance
@@ -96,10 +92,24 @@ module BBServices
 
     private
 
-    # Should the chain continue?
-    # If we don't have a last service, return true
-    # If we have a last service check the successful? method
-    def continue_chain?
+    def _chain(block)
+      if _continue_chain?
+        service = block.call(self)
+
+        if BBServices.is_a_service?(service)
+          @successful = service.successful?
+          @services << service
+        else
+          @successful = true
+          # Otherwise we have had something else back from the service
+        end
+      end
+    end
+
+    # Returns true / false if the chain is able to continue, follows the following:
+    # - If we don't have a last service, return true
+    # - If we have a last service check the successful? method
+    def _continue_chain?
       last_service == nil ? true : last_service.successful?
     end
   end

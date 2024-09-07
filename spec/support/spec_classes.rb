@@ -43,9 +43,13 @@ class UnsuccessfulTestService < BBServices::Service
   end
 end
 
-class WithParamsTestService < BBServices::Service
-  include BBServices::Extensions::WithParams
+# class WithParamsTestService < BBServices::Service
+#   include BBServices::Extensions::WithParams
 
-  def on_run() end;
-  def on_run!() end;
+#   def on_run() end;
+#   def on_run!() end;
+# end
+
+class BaseServiceProviderTestController
+  include BBServices::ServiceProvider
 end

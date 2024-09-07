@@ -2,22 +2,24 @@
 
 require_relative 'service_chain'
 
-# The BBServices namespace.
 module BBServices
 
   # The lightweight service object provided by BBServices. The basic functionality includes:
   # - Ability to access user defined initalization. E.g. initalize(one = 1, two = 2)
+  # - Ability to chain services via '.then'
+  # - Ability to check success / failure
+  # - Ability to store errors thrown via services
   class Service
-    attr_reader :error
+    
 
     class << self
-
+      
       # Creates the service instances and calls run upon said instance
       # @param [Array] args The array of params which has been passed to run
       # @param [Block] block The block which will be called upon the service finishing running
       # @return [BBServices.Service] returns the service instance
-      def run(*args, &block)
-        new(*args).tap do |service|
+      def run(*args, **kwargs, &block)
+        new(*args, **kwargs).tap do |service|
           service.run(&block)
         end
       end
@@ -26,8 +28,8 @@ module BBServices
       # @param [Array] args The array of params which has been passed to run!
       # @param [Block] block The block which will be called upon the service finishing running successfully
       # @return [BBServices.Service] returns the service instance
-      def run!(*args, &block)
-        new(*args).tap do |service|
+      def run!(*args, **kwargs, &block)
+        new(*args, **kwargs).tap do |service|
           service.run!(&block)
         end
       end
@@ -46,7 +48,7 @@ module BBServices
         set_successful(false)
         register_error(e)
       ensure
-        yield(self) if block_given?
+        call_block(block) if block_given?
       end
     end
 
@@ -59,12 +61,20 @@ module BBServices
         @ran = true
         successful = on_run!
         set_successful(successful == nil ? true : !!successful)
-        yield(self) if block_given?
+        call_block(block) if block_given?
       rescue => e
         set_successful(false)
         register_error(e)
         raise e
       end
+    end
+
+    # Returns a ServiceChain with the service as a registered service.
+    # The service must have been ran in order to call this chaining method.
+    def then(*args, &block)
+      raise BBServices::ServiceMustRunBeforeChainingError if !self.ran?
+
+      BBServices::ServiceChain.new(self).then(block)
     end
 
     # Returns true/false on if the service has been ran
@@ -75,12 +85,6 @@ module BBServices
 
     def run?
       !!@ran
-    end
-
-    # Returns true/false on if the service did succeed.
-    # @return [Boolean] true/false on if the service did succeed.
-    def succeeded?
-      successful?
     end
 
     # Returns true/false on if the service was successful.
@@ -123,9 +127,17 @@ module BBServices
       errors.count > 0
     end
 
+    def error
+      errors.first
+    end
+
     def errors
       @errors ||= []
     end
+
+    alias_method :succeeded?, :successful?
+    alias_method :call, :run
+    alias_method :call!, :run!
 
     protected
 
@@ -143,6 +155,10 @@ module BBServices
     # to that return
     def on_run!
       raise NotImplementedError.new('#run must be implemented on subclass')
+    end
+
+    def call_block(block)
+      block.call(self)
     end
 
     private

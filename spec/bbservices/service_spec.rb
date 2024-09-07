@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe BBServices::Service do
 
-  context 'with a base BBServices::Service' do
+  context 'base BBServices::Service' do
     describe '#on_run' do
       it 'should throw a NotImplementedError' do
         expect { BBServices::Service.run }.to raise_error(NotImplementedError)
@@ -23,25 +23,33 @@ RSpec.describe BBServices::Service do
 
     context 'self.' do
       describe '#new' do
-        it { expect(TestService.new).to be_a(described_class) }
+        subject { TestService.new }
+
+        include_examples('is_a_service')
       end
       
       describe '#run' do
         subject { TestService.run(test_param) }
 
-        it { expect(subject).to be_a(described_class) }
+        include_examples('is_a_service')
+
         it { expect(subject).to be_a(TestService) }
         it { expect(subject.param_one).to eq(test_param) }
-        it { expect { |b| TestService.run(&b) }.to yield_control }
+        it 'should yield control to the passed block' do
+          expect { |b| TestService.run(&b) }.to yield_control
+        end
       end
 
       describe '#run!' do
         subject { TestService.run!(test_param) }
 
-        it { expect(subject).to be_a(described_class) }
+        include_examples('is_a_service')
+
         it { expect(subject).to be_a(TestService) }
         it { expect(subject.param_one).to eq(test_param) }
-        it { expect { |b| TestService.run!(&b) }.to yield_control }
+        it 'should yield control to the passed block' do
+          expect { |b| TestService.run(&b) }.to yield_control
+        end
       end
     end
 
@@ -49,17 +57,14 @@ RSpec.describe BBServices::Service do
       subject { TestService.new(test_param) }
   
       describe '#run' do
+        it 'should yield control to the passed block' do
+          expect { |b| subject.run(&b) }.to yield_control
+        end
+
         context 'with a successful run' do
           before { subject.run }
 
-          it { expect(subject.ran?).to eq(true) }
-          it { expect(subject.succeeded?).to eq(true) }
-          it { expect(subject.error?).to eq(false) }
-          it { expect(subject.errors).to eq([]) }
-        end
-
-        it 'should yield control to the passed block' do
-          expect { |b| subject.run(&b) }.to yield_control
+          include_examples('is_a_successful_service')
         end
 
         context 'with an unsuccessful run' do
@@ -68,10 +73,7 @@ RSpec.describe BBServices::Service do
             subject.run
           end
 
-          it { expect(subject.ran?).to eq(true) }
-          it { expect(subject.succeeded?).to eq(false) }
-          it { expect(subject.error?).to eq(true) }
-          it { expect(subject.errors.map(&:message)).to eq(['RuntimeError']) }
+          include_examples('is_a_failed_service', 'RuntimeError')
         end
       end
   
@@ -79,10 +81,7 @@ RSpec.describe BBServices::Service do
         context 'with a successful run' do
           before { subject.run! }
 
-          it { expect(subject.ran?).to eq(true) }
-          it { expect(subject.succeeded?).to eq(true) }
-          it { expect(subject.error?).to eq(false) }
-          it { expect(subject.errors).to eq([]) }
+          include_examples('is_a_successful_service')
         end
   
         it 'should yield control to the passed block' do
@@ -95,7 +94,7 @@ RSpec.describe BBServices::Service do
         end
       end
 
-      context 'with no run' do
+      context 'when intialized' do
         describe '#succeeded?' do
           it { expect(subject.succeeded?).to be(false) }
         end
@@ -301,13 +300,15 @@ RSpec.describe BBServices::Service do
     context 'self.' do
       describe '#new' do
         it { expect(NamedTestService.new).to be_a(described_class) }
+        it { expect(NamedTestService.new(param_one: 'test')).to be_a(described_class) }
       end
       
       describe '#run' do
         context 'with params named' do
           subject { NamedTestService.run(param_one: test_param) }
 
-          it { expect(subject).to be_a(described_class) }
+          include_examples('is_a_service')
+
           it { expect(subject).to be_a(NamedTestService) }
           it { expect(subject.param_one).to eq(test_param) }
           it { expect { |b| TestService.run(&b) }.to yield_control }
@@ -316,7 +317,8 @@ RSpec.describe BBServices::Service do
         context 'without named params' do
           subject { NamedTestService.run() }
 
-          it { expect(subject).to be_a(described_class) }
+          include_examples('is_a_service')
+
           it { expect(subject).to be_a(NamedTestService) }
           it { expect(subject.param_one).to eq(nil) }
           it { expect(subject.param_two).to eq(nil) }
@@ -327,7 +329,8 @@ RSpec.describe BBServices::Service do
       describe '#run!' do
         subject { NamedTestService.run!(param_one: test_param) }
 
-        it { expect(subject).to be_a(described_class) }
+        include_examples('is_a_service')
+        
         it { expect(subject).to be_a(NamedTestService) }
         it { expect(subject.param_one).to eq(test_param) }
         it { expect { |b| NamedTestService.run!(&b) }.to yield_control }

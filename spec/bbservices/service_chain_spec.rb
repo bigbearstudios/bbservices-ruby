@@ -3,9 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe BBServices::ServiceChain do
-  let(:test_param_one) { 111 }
-  let(:test_param_two) { { a: 111 } }
-
   context 'instance' do
     subject { BBServices::ServiceChain.new }
 
