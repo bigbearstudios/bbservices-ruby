@@ -2,7 +2,6 @@
   "scripts": {
     "bundle": "bundle install",
     "test": "bundle exec rspec",
-    "yard": "yardoc 'lib/**/*.rb'",
     "build": "gem build bbservices.gemspec"
   }
 }

@@ -10,6 +10,12 @@ require_relative 'bbservices/extensions/with_params'
 # service resolution
 module BBServices
 
+  class NilServiceInChainError < StandardError
+    def message
+      'BBServices - A BBService must be passed to a chain'
+    end
+  end
+
   class ServiceMustRunBeforeChainingError < StandardError
     def message
       'BBServices - Service must be ran before chaining via then can occur'

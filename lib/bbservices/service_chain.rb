@@ -9,14 +9,12 @@ module BBServices
 
     # Initializes the ServiceChain
     # @services a list of the services in the chain
-    def initialize(service = nil)
-      @successful = nil
-      @services = []
-      @last_service_ran = nil
+    def initialize(service)
 
-      if service != nil
-        @services << service
-      end
+      raise NilServiceInChainError if service.nil?
+
+      @successful = nil
+      @services = [service]
     end
 
     # Creates a new chain in the service with block, returns the chain instance for method chaining.
@@ -100,8 +98,7 @@ module BBServices
           @successful = service.successful?
           @services << service
         else
-          @successful = true
-          # Otherwise we have had something else back from the service
+          raise BBServices::ServiceExpectedError
         end
       end
     end
@@ -110,7 +107,7 @@ module BBServices
     # - If we don't have a last service, return true
     # - If we have a last service check the successful? method
     def _continue_chain?
-      last_service == nil ? true : last_service.successful?
+      last_service.successful?
     end
   end
 end

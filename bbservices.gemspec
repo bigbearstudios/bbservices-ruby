@@ -5,10 +5,10 @@ Gem::Specification.new do |spec|
   spec.version = '3.1.1'
   spec.authors = 'Stuart Farnaby, Big Bear Studios'
   spec.license = 'MIT'
-  spec.homepage = 'https://gitlab.com/big-bear-studios-open-source/bbservices'
+  spec.homepage = 'https://github.com/bigbearstudios-web/bbservices'
   spec.summary = 'A simple service library for Ruby. Allows the usage of Services through a set of simple to use classes'
 
-  spec.required_ruby_version = '>= 2.5'
+  spec.required_ruby_version = '>= 3.2.0'
 
   spec.files = ['lib/bbservices.rb']
   spec.files += Dir['lib/**/*.rb']

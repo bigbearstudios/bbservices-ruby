@@ -1,7 +1,5 @@
 # BBServices
 
-[![pipeline status](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/pipeline.svg)](https://gitlab.com/big-bear-studios-open-source/bbservices/-/commits/master) [![coverage report](https://gitlab.com/big-bear-studios-open-source/bbservices/badges/master/coverage.svg)](https://big-bear-studios-open-source.gitlab.io/bbservices)
-
 ## Table of Contents
 
 - [BBServices](#bbservices)
@@ -52,10 +50,12 @@ To create a service, simply create a new class and extend it with `BBServices::S
 ``` ruby
 class MyService < BBServices::Service
 
-  def initalize(my_number)
+  attr_reader :output
+
+  def initalize(a_number)
     # Here you can setup any member variales you require and wish to put to
     # use within the on_run / on_run! methods
-    @my_number = my_number
+    @a_number = a_number
   end
 
   #
@@ -65,13 +65,13 @@ class MyService < BBServices::Service
   ##
   # This method is called when calling 'run / call' or 'run_service' from a provider.
   def on_run
-    @output = @my_number * 5
+    @output = @a_number * 5
   end
 
   ##
   # This method is called when calling 'run! / call!' or 'run_service!' from a provider.
   def on_run!
-    @output = @my_number * 5
+    @output = @a_number * 5
   end
 end
 ```
@@ -79,9 +79,12 @@ end
 One you have created your service and overriden the on_run OR on_run! methods you can then call the service via the class methods of `run` / `run!`. Its worth noting here that the return of `run` and `run!` is the BBServices::Service itself or a block can be passed which will return the given service which by default will return the BBServices::Service instance.
 
 ``` ruby
-MyService.run(10) or MyService.run!(10)
-# Service instance will be return from both
 
+# MyService instance returned from run or run!
+service = MyService.run(10)
+service = MyService.run!(10)
+
+# Myservice instance passed as param to the block
 MyService.run(10) { |service| }
 
 ```
@@ -110,8 +113,13 @@ Check the completion state via block:
 
 # Similar syntax to the format blocks in Rails
 # Please note this will cause two if statements to be processed, E.g. one for success, one for failure
-service.success { # Do things on success }
-service.failure { # Do things on failure }
+service.success { 
+  # Do things on success 
+}
+
+service.failure { 
+  # Do things on failure 
+}
 
 # Cheaper programatically but uglier syntax
 service.on(
@@ -178,21 +186,17 @@ With the entire point behind services being that they should perform a single ac
 
 ```ruby
 
-# Note that your inital service needs to be ran, this is because without this BBServices would know if
-# you wish to use the ! method on run or not
 CreateUserService.run(params)
   .then { |chain| EmailUserService.run!(chain.first.user) }
   .then { |chain| PushNotifyUserService.run!(chain.first.user) }
 
 ```
-<!-- 
+
 There are a given set of rules which are always followed when using the .chain method.
 
-1. A BBService object can be returned from .chain, this will be stored within the ServiceChain. Any other value will be treat as a success / fail based on truthiness.
-2. The params value is the value from the current call to .chain.
-3. Success of the chain will be denoted by, All of the services being successful or All of the chained blocks returning a 'non-nil' value
-4. Any failures (E.g. Errors been thrown) will result in the chain stopping
-5. Any failures using run! will result in the error being throw and require catching -->
+1. A BBService object must be returned from .then / .chain, an error will be thrown (and not caught by BBServices) if not
+2. Success of the chain will be denoted by, ALL of the services being successful in the chain
+3. Any failures (E.g. Errors been thrown) will result in the chain stopping
 
 ### Safe vs Unsafe Execution
 
@@ -203,6 +207,8 @@ BBServices uses a similar concept to Rails / ActiveRecord with its concept of sa
 All extensions can be included into a service via `include`. See below for examples of the extensions:
 
 #### WithParams
+
+WIP as of v4.0.0 when the entire BBServices architecture got refactored
 
 <!-- ``` ruby
 #Called with:

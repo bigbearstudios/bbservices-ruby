@@ -4,45 +4,17 @@ require 'spec_helper'
 
 RSpec.describe BBServices::ServiceChain do
   context 'instance' do
-    subject { BBServices::ServiceChain.new }
+    subject { BBServices::ServiceChain.new(TestService.run) }
 
     describe '#chain' do
-      it { expect(subject.chain {}).to be_a(BBServices::ServiceChain) }
-
-      context 'with a non service chain followed by a service chain' do
-        let(:service) { TestService.run }
-
-        before do
-          subject.chain { true }.chain { service }
-        end
-
-        it { expect(subject.services).to eq([service]) }
-        it { expect(subject.successful?).to be(true) }
-        it { expect(subject.failed?).to be(false) }
-
-        it { expect(subject.services.last.ran?).to be(true) }
-        it { expect(subject.services.last.successful?).to be(true) }
-        it { expect(subject.services.last.succeeded?).to be(true) }
-        it { expect(subject.services.last.failed?).to be(false) }
-      end
-
-      context 'with only a non-service chained' do
-        before do
-          subject.chain { }
-        end
-
-        it { expect(subject.services).to eq([]) }
-        it { expect(subject.services.last).to be(nil) }
-        it { expect(subject.successful?).to be(true) }
-        it { expect(subject.succeeded?).to be(true) }
-      end
+      it { expect(subject.chain { TestService.run }).to be_a(BBServices::ServiceChain) }
 
       context 'with a successful service in the chain' do
         before do
           subject.chain { TestService.run }
         end
 
-        it { expect(subject.services.length).to be(1) }
+        it { expect(subject.services.length).to be(2) }
         it { expect(subject.services.last.ran?).to be(true) }
         it { expect(subject.services.last.successful?).to be(true) }
         it { expect(subject.services.last.succeeded?).to be(true) }
@@ -70,7 +42,7 @@ RSpec.describe BBServices::ServiceChain do
             .chain { TestService.run }
         end
 
-        it { expect(subject.services.length).to be(1) }
+        it { expect(subject.services.length).to be(2) }
         it { expect(subject.services.last.ran?).to be(true) }
         it { expect(subject.services.last.successful?).to be(false) }
         it { expect(subject.services.last.succeeded?).to be(false) }
@@ -102,7 +74,7 @@ RSpec.describe BBServices::ServiceChain do
             .chain { TestService.run }
         end
 
-        it { expect(subject.services.length).to be(4) }
+        it { expect(subject.services.length).to be(5) }
         it { expect(subject.services.last.ran?).to be(true) }
         it { expect(subject.services.last.successful?).to be(true) }
       end

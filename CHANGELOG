@@ -64,16 +64,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--  Changed BBServices::Service - error is now replaced with an errors array
--  Changed BBServices::Service - run_service & run_service has been replaced with on_run & on_run!
--  Changed BBServices::ServiceChain - no longer requires a BBService to be returned
-
-### Added
-
-- Added param functionality via the BBServices::Extensions::WithParams module
+- Changed BBServices::Service - error is now replaced with an errors array
+- Changed BBServices::Service - run_service & run_service has been replaced with on_run & on_run!
+- Changed BBServices::Service - .new now passes directly thought to initalize which can be used by the developer
+- Changed BBServices::Service - .new now pass *args, **kargs to the underlying sub class
+- Changed BBServices::ServiceChain - Requires a BBService to be returned
+- Changed BBServices::ServiceChain - .new now must be passed a service
 
 ### Removed
 
 - BBServices::Service - params, object & error are no longer part of the base Service class
 - BBServices::Service - initialize_service is no longer needed and initalize can be used instead
+- BBServices::Extensions::WithParams - removed the complete module
 - rubocop, guard-rspec as dependencies
+- coverage report / pipeline icons from the README.md
