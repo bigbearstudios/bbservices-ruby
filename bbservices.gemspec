@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'bbservices'
-  spec.version = '3.1.1'
+  spec.version = '4.0.0'
   spec.authors = 'Stuart Farnaby, Big Bear Studios'
   spec.license = 'MIT'
   spec.homepage = 'https://github.com/bigbearstudios-web/bbservices'
@@ -14,6 +14,6 @@ Gem::Specification.new do |spec|
   spec.files += Dir['lib/**/*.rb']
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'rspec', '3.12.0'
+  spec.add_development_dependency 'rspec', '3.4.0'
   spec.add_development_dependency 'simplecov', '0.22.0'
 end

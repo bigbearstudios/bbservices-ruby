@@ -1,7 +1,0 @@
-{
-  "scripts": {
-    "bundle": "bundle install",
-    "test": "bundle exec rspec",
-    "build": "gem build bbservices.gemspec"
-  }
-}

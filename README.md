@@ -43,7 +43,7 @@ gem 'bbservices'
 
 ## Usage
 
-### Quick Start
+### Quick Start - v4.0.0
 
 To create a service, simply create a new class and extend it with `BBServices::Service` and override the following methods:
 
@@ -233,6 +233,41 @@ class MyService < BBServices::Service
 end
 ``` -->
 
+## Upgrading from v1.*.* / v2.*.* / v3.*.* to <= v4.0.0
+
+The main change to v4 is that params are now passed directly to your initalize method and the need for on_initalize has been removed. So your service which once looked like:
+
+``` ruby
+
+class MyService < BBServices::Service
+  def on_initalize
+    # 
+  end
+
+  def on_run
+    # Do something...
+  end
+end
+
+# Becomes
+
+class MyService < BBServices::Service
+  def initalize(what, ever, params, you, like)
+
+  end
+
+  def on_run
+    # Do something
+  end
+end
+
+```
+
+### WithParams
+
+The WithParams extension has been deprecated as of v4.0.0
+
+
 ## Contributing
 
 - Clone the repository
@@ -248,6 +283,13 @@ bundle exec rspec
 ```
 
 ### Publishing (Requires Ruby Gems Access)
+
+#### Pre-publishing Todo List
+
+- Update the CHANGELOG
+- Update the spec.version in bbservices.gemspec
+
+#### Building & pushing
 
 ``` bash
 gem build bbservices.gemspec
