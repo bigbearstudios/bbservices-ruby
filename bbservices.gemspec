@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = '4.0.0'
   spec.authors = 'Stuart Farnaby, Big Bear Studios'
   spec.license = 'MIT'
-  spec.homepage = 'https://github.com/bigbearstudios-web/bbservices'
+  spec.homepage = 'https://github.com/bigbearstudios/bbservices-ruby'
   spec.summary = 'A simple service library for Ruby. Allows the usage of Services through a set of simple to use classes'
 
   spec.required_ruby_version = '>= 3.2.0'

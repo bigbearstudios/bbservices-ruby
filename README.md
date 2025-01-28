@@ -274,7 +274,7 @@ The WithParams extension has been deprecated as of v4.0.0
 - Install bundler `gem install bundler`
 - Install gems `bundle`
 - Write / push some code
-- Create a PR via `https://gitlab.com/big-bear-studios-open-source/bbservices/-/merge_requests`
+- Create a PR via `https://github.com/bigbearstudios/bbservices-ruby/pulls`
 
 ### Running Tests
 
@@ -303,4 +303,4 @@ gem push bbservices-*.*.*.gem
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](./LICENSE).
