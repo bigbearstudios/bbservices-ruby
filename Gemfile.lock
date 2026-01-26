@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bbservices (4.0.0)
+    bbservices (4.0.1)
 
 GEM
   remote: http://www.rubygems.org/
